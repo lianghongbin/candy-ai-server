@@ -73,6 +73,24 @@ public class SysUser extends BaseEntity
     /** 密码最后更新时间 */
     private Date pwdUpdateDate;
 
+    /** 邮箱验证状态（0未验证 1已验证） */
+    private Integer emailVerified;
+
+    /** 邮箱验证码 */
+    private String emailVerifyCode;
+
+    /** 邮箱验证码过期时间 */
+    private Date emailVerifyExpire;
+
+    /** 注册来源（email/google/discord） */
+    private String registerSource;
+
+    /** 头像URL */
+    private String avatarUrl;
+
+    /** 最后登录来源 */
+    private String lastLoginSource;
+
     /** 部门对象 */
     @Excels({
         @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
@@ -258,6 +276,66 @@ public class SysUser extends BaseEntity
     public void setPwdUpdateDate(Date pwdUpdateDate)
     {
         this.pwdUpdateDate = pwdUpdateDate;
+    }
+
+    public Integer getEmailVerified()
+    {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Integer emailVerified)
+    {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getEmailVerifyCode()
+    {
+        return emailVerifyCode;
+    }
+
+    public void setEmailVerifyCode(String emailVerifyCode)
+    {
+        this.emailVerifyCode = emailVerifyCode;
+    }
+
+    public Date getEmailVerifyExpire()
+    {
+        return emailVerifyExpire;
+    }
+
+    public void setEmailVerifyExpire(Date emailVerifyExpire)
+    {
+        this.emailVerifyExpire = emailVerifyExpire;
+    }
+
+    public String getRegisterSource()
+    {
+        return registerSource;
+    }
+
+    public void setRegisterSource(String registerSource)
+    {
+        this.registerSource = registerSource;
+    }
+
+    public String getAvatarUrl()
+    {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl)
+    {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getLastLoginSource()
+    {
+        return lastLoginSource;
+    }
+
+    public void setLastLoginSource(String lastLoginSource)
+    {
+        this.lastLoginSource = lastLoginSource;
     }
 
     public SysDept getDept()

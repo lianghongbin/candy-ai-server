@@ -150,6 +150,11 @@
 - [ ] 邮箱验证功能实现
 - [ ] 用户信息管理接口
 
+#### 数据访问层 ✅ 已完成 (2025-08-01)
+- [x] **Mapper接口创建** - SysUserOauthMapper、SysEmailVerifyMapper
+- [x] **XML映射文件** - 完整的CRUD操作和自定义查询
+- [x] **依赖配置修复** - 修复ruoyi-system模块依赖问题
+
 #### 第三阶段：第三方登录 🔄 待开始
 - [ ] Google OAuth集成
 - [ ] Discord OAuth集成
