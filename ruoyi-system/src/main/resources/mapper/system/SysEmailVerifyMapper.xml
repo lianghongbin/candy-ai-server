@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysEmailVerifyMapper">
+    
+    <resultMap type="SysEmailVerify" id="SysEmailVerifyResult">
+        <result property="id"    column="id"    />
+        <result property="email"    column="email"    />
+        <result property="verifyCode"    column="verify_code"    />
+        <result property="verifyType"    column="verify_type"    />
+        <result property="expireTime"    column="expire_time"    />
+        <result property="used"    column="used"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectSysEmailVerifyVo">
+        select id, email, verify_code, verify_type, expire_time, used, create_time from sys_email_verify
+    </sql>
+
+    <select id="selectSysEmailVerifyList" parameterType="SysEmailVerify" resultMap="SysEmailVerifyResult">
+        <include refid="selectSysEmailVerifyVo"/>
+        <where>  
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="verifyCode != null  and verifyCode != ''"> and verify_code = #{verifyCode}</if>
+            <if test="verifyType != null  and verifyType != ''"> and verify_type = #{verifyType}</if>
+            <if test="used != null "> and used = #{used}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectSysEmailVerifyById" parameterType="Long" resultMap="SysEmailVerifyResult">
+        <include refid="selectSysEmailVerifyVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectLatestValidVerifyCode" resultMap="SysEmailVerifyResult">
+        <include refid="selectSysEmailVerifyVo"/>
+        where email = #{email} 
+        and verify_type = #{verifyType} 
+        and used = 0 
+        and expire_time > now()
+        order by create_time desc 
+        limit 1
+    </select>
+        
+    <insert id="insertSysEmailVerify" parameterType="SysEmailVerify" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_email_verify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="email != null and email != ''">email,</if>
+            <if test="verifyCode != null and verifyCode != ''">verify_code,</if>
+            <if test="verifyType != null and verifyType != ''">verify_type,</if>
+            <if test="expireTime != null">expire_time,</if>
+            <if test="used != null">used,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="verifyCode != null and verifyCode != ''">#{verifyCode},</if>
+            <if test="verifyType != null and verifyType != ''">#{verifyType},</if>
+            <if test="expireTime != null">#{expireTime},</if>
+            <if test="used != null">#{used},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysEmailVerify" parameterType="SysEmailVerify">
+        update sys_email_verify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="verifyCode != null and verifyCode != ''">verify_code = #{verifyCode},</if>
+            <if test="verifyType != null and verifyType != ''">verify_type = #{verifyType},</if>
+            <if test="expireTime != null">expire_time = #{expireTime},</if>
+            <if test="used != null">used = #{used},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="markVerifyCodeAsUsed" parameterType="Long">
+        update sys_email_verify set used = 1 where id = #{id}
+    </update>
+
+    <delete id="deleteSysEmailVerifyById" parameterType="Long">
+        delete from sys_email_verify where id = #{id}
+    </delete>
+
+    <delete id="deleteSysEmailVerifyByIds" parameterType="String">
+        delete from sys_email_verify where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="cleanExpiredVerifyCodes">
+        delete from sys_email_verify where expire_time &lt; now()
+    </delete>
+</mapper> 

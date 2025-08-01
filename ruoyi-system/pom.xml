@@ -20,8 +20,9 @@
 
         <!-- 通用工具-->
         <dependency>
-            <groupId>com.ruoyi</groupId>
+            <groupId>com.vibetempt</groupId>
             <artifactId>ruoyi-common</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
     </dependencies>
