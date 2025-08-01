@@ -39,7 +39,7 @@ public class AiCharacterServiceImpl implements IAiCharacterService {
      */
     @Override
     public AiCharacter selectAiCharacterById(Long characterId) {
-        return aiCharacterMapper.selectAiCharacterByCharacterId(characterId);
+        return aiCharacterMapper.selectAiCharacterById(characterId);
     }
     
     /**
@@ -72,7 +72,7 @@ public class AiCharacterServiceImpl implements IAiCharacterService {
      */
     @Override
     public int deleteAiCharacterById(Long characterId) {
-        return aiCharacterMapper.deleteAiCharacterByCharacterId(characterId);
+        return aiCharacterMapper.deleteAiCharacterById(characterId);
     }
     
     /**
@@ -83,7 +83,7 @@ public class AiCharacterServiceImpl implements IAiCharacterService {
      */
     @Override
     public int deleteAiCharacterByIds(Long[] characterIds) {
-        return aiCharacterMapper.deleteAiCharacterByCharacterIds(characterIds);
+        return aiCharacterMapper.deleteAiCharacterByIds(characterIds);
     }
     
     /**
