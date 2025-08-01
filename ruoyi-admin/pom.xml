@@ -43,6 +43,13 @@
             <artifactId>ruoyi-framework</artifactId>
         </dependency>
 
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>com.vibetempt</groupId>
+            <artifactId>ruoyi-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <!-- 系统模块-->
         <dependency>
             <groupId>com.vibetempt</groupId>

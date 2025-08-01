@@ -56,8 +56,9 @@
 
         <!-- 系统模块-->
         <dependency>
-            <groupId>com.ruoyi</groupId>
+            <groupId>com.vibetempt</groupId>
             <artifactId>ruoyi-system</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
     </dependencies>

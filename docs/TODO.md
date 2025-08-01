@@ -151,7 +151,11 @@
   - 实现SysEmailRegisterServiceImpl服务类
   - 扩展SysUser实体类，添加新字段
   - 实现邮箱验证码发送和验证功能
-- [ ] 邮箱注册Controller接口
+- [x] **邮箱注册Controller接口** ✅ 已完成 (2025-08-01)
+  - 创建SysEmailRegisterController
+  - 实现邮箱注册、验证码发送、验证码验证、邮箱检查等API
+  - 添加Swagger API文档注解
+  - 修复模块依赖配置
 - [ ] 邮箱验证功能实现
 - [ ] 用户信息管理接口
 
