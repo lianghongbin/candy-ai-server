@@ -145,22 +145,28 @@
 - [x] 实体类和DTO创建
 - [x] 系统配置添加
 
-#### 第二阶段：核心功能 ✅ 已完成 (2025-08-01)
-- [x] **邮箱注册服务层** ✅ 已完成 (2025-08-01)
-  - 创建ISysEmailRegisterService接口
-  - 实现SysEmailRegisterServiceImpl服务类
-  - 扩展SysUser实体类，添加新字段
-  - 实现邮箱验证码发送和验证功能
-- [x] **邮箱注册Controller接口** ✅ 已完成 (2025-08-01)
-  - 创建SysEmailRegisterController
-  - 实现邮箱注册、验证码发送、验证码验证、邮箱检查等API
-  - 添加Swagger API文档注解
-  - 修复模块依赖配置
-- [x] **邮箱验证功能实现** ✅ 已完成 (2025-08-01)
-  - 实现邮箱验证码发送功能
-  - 实现邮箱验证码验证功能
-  - 集成到注册流程中
-- [ ] 用户信息管理接口
+       #### 第二阶段：核心功能 ✅ 已完成 (2025-08-01)
+       - [x] **邮箱注册服务层** ✅ 已完成 (2025-08-01)
+         - 创建ISysEmailRegisterService接口
+         - 实现SysEmailRegisterServiceImpl服务类
+         - 扩展SysUser实体类，添加新字段
+         - 实现邮箱验证码发送和验证功能
+       - [x] **邮箱注册Controller接口** ✅ 已完成 (2025-08-01)
+         - 创建SysEmailRegisterController
+         - 实现邮箱注册、验证码发送、验证码验证、邮箱检查等API
+         - 添加Swagger API文档注解
+         - 修复模块依赖配置
+       - [x] **邮箱验证功能实现** ✅ 已完成 (2025-08-01)
+         - 实现邮箱验证码发送功能
+         - 实现邮箱验证码验证功能
+         - 集成到注册流程中
+       - [x] **邮箱注册功能测试** ✅ 已完成 (2025-08-01)
+         - 创建SysEmailRegisterServiceImplTest单元测试
+         - 创建SysEmailRegisterControllerTest集成测试
+         - 创建test_email_register.sh功能测试脚本
+         - 添加测试依赖和配置文件
+         - 解决Java 24与Mockito兼容性问题
+       - [ ] 用户信息管理接口
 
 #### 数据访问层 ✅ 已完成 (2025-08-01)
 - [x] **Mapper接口创建** - SysUserOauthMapper、SysEmailVerifyMapper
