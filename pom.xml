@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-    <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi</artifactId>
-    <version>3.9.0</version>
+    <groupId>com.vibetempt</groupId>
+    <artifactId>candy-ai-server</artifactId>
+    <version>1.0.0</version>
 
-    <name>ruoyi</name>
-    <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <name>candy-ai-server</name>
+    <url>https://github.com/vibetempt/candy-ai-server</url>
+    <description>Candy AI 虚拟女友管理系统</description>
     
     <properties>
         <ruoyi.version>3.9.0</ruoyi.version>
@@ -195,6 +195,9 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>candy-ai/candy-ai-domain</module>
+        <module>candy-ai/candy-ai-service</module>
+        <module>candy-ai/candy-ai-api</module>
     </modules>
     <packaging>pom</packaging>
 

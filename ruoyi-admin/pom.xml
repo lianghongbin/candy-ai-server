@@ -54,6 +54,13 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!-- Candy AI API -->
+        <dependency>
+            <groupId>com.vibetempt</groupId>
+            <artifactId>candy-ai-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

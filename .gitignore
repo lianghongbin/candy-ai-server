@@ -25,6 +25,10 @@ target/
 *.iml
 *.ipr
 
+### VS Code ###
+.vscode/
+*.code-workspace
+
 ### JRebel ###
 rebel.xml
 
@@ -37,11 +41,122 @@ nbdist/
 .nb-gradle/
 
 ######################################################################
-# Others
+# Logs
 *.log
-*.xml.versionsBackup
-*.swp
+logs/
+backend.log
+frontend.log
 
+######################################################################
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+######################################################################
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+######################################################################
+# nyc test coverage
+.nyc_output
+
+######################################################################
+# Dependency directories
+node_modules/
+jspm_packages/
+
+######################################################################
+# Optional npm cache directory
+.npm
+
+######################################################################
+# Optional eslint cache
+.eslintcache
+
+######################################################################
+# Optional REPL history
+.node_repl_history
+
+######################################################################
+# Output of 'npm pack'
+*.tgz
+
+######################################################################
+# Yarn Integrity file
+.yarn-integrity
+
+######################################################################
+# dotenv environment variables file
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+######################################################################
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+######################################################################
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+######################################################################
+# Backup files
+*.bak
+*.backup
+*.old
+
+######################################################################
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+######################################################################
+# Upload files
+uploadPath/
+uploads/
+
+######################################################################
+# Configuration files with sensitive data
+application-prod.yml
+application-prod.properties
+*.key
+*.pem
+*.p12
+
+######################################################################
+# Others
+*.xml.versionsBackup
+
+# Keep build files for specific types
 !*/build/*.java
 !*/build/*.html
 !*/build/*.xml
+
+######################################################################
+# Project specific
+# 忽略前端构建产物
+ruoyi-ui/dist/
+candy-ui/dist/
+
+# 忽略数据库备份
+*.sql.bak
+
+# 忽略临时配置文件
+temp/
+tmp/
