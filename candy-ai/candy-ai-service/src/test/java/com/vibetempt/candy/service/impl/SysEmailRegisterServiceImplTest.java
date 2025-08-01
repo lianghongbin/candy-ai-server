@@ -1,4 +1,4 @@
-package com.ruoyi.system.service.impl;
+package com.vibetempt.candy.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -13,18 +13,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ruoyi.common.core.domain.entity.SysEmailVerify;
 import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.core.domain.model.EmailRegisterBody;
 import com.ruoyi.common.core.redis.RedisCache;
-import com.ruoyi.system.mapper.SysEmailVerifyMapper;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
+import com.vibetempt.candy.domain.entity.SysEmailVerify;
+import com.vibetempt.candy.domain.model.EmailRegisterBody;
+import com.vibetempt.candy.service.mapper.SysEmailVerifyMapper;
 
 /**
  * 邮箱注册服务单元测试
  * 
- * @author ruoyi
+ * @author candy
  */
 @ExtendWith(MockitoExtension.class)
 class SysEmailRegisterServiceImplTest {
@@ -38,8 +38,8 @@ class SysEmailRegisterServiceImplTest {
     @Mock
     private SysEmailVerifyMapper emailVerifyMapper;
 
-    // @Mock
-    // private RedisCache redisCache;
+    @Mock
+    private RedisCache redisCache;
 
     @InjectMocks
     private SysEmailRegisterServiceImpl emailRegisterService;
