@@ -146,7 +146,12 @@
 - [x] 系统配置添加
 
 #### 第二阶段：核心功能 🔄 进行中
-- [ ] 邮箱注册接口实现
+- [x] **邮箱注册服务层** ✅ 已完成 (2025-08-01)
+  - 创建ISysEmailRegisterService接口
+  - 实现SysEmailRegisterServiceImpl服务类
+  - 扩展SysUser实体类，添加新字段
+  - 实现邮箱验证码发送和验证功能
+- [ ] 邮箱注册Controller接口
 - [ ] 邮箱验证功能实现
 - [ ] 用户信息管理接口
 
