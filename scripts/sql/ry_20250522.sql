@@ -55,6 +55,22 @@ create table sys_user (
   login_ip          varchar(128)    default ''                 comment '最后登录IP',
   login_date        datetime                                   comment '最后登录时间',
   pwd_update_date   datetime                                   comment '密码最后更新时间',
+  -- 邮箱验证相关字段
+  email_verified    int             default 0                  comment '邮箱验证状态（0未验证 1已验证）',
+  email_verify_code varchar(10)     default null               comment '邮箱验证码',
+  email_verify_expire datetime      default null               comment '邮箱验证码过期时间',
+  old_email_verify_code varchar(10) default null               comment '原邮箱验证码（用于换绑验证）',
+  old_email_verify_expire datetime  default null               comment '原邮箱验证码过期时间',
+  new_email_verify_code varchar(10) default null               comment '新邮箱验证码（用于换绑验证）',
+  new_email_verify_expire datetime  default null               comment '新邮箱验证码过期时间',
+  -- 手机验证相关字段
+  phone_verified    int             default 0                  comment '手机验证状态（0未验证 1已验证）',
+  phone_verify_code varchar(10)     default null               comment '手机验证码',
+  phone_verify_expire datetime      default null               comment '手机验证码过期时间',
+  -- 用户扩展信息
+  register_source   varchar(20)     default null               comment '注册来源（email/google/github/discord/apple/facebook）',
+  avatar_url        varchar(255)    default null               comment '头像URL',
+  last_login_source varchar(20)     default null               comment '最后登录来源',
   create_by         varchar(64)     default ''                 comment '创建者',
   create_time       datetime                                   comment '创建时间',
   update_by         varchar(64)     default ''                 comment '更新者',
@@ -66,8 +82,8 @@ create table sys_user (
 -- ----------------------------
 -- 初始化-用户信息表数据
 -- ----------------------------
-insert into sys_user values(1,  103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), sysdate(), 'admin', sysdate(), '', null, '管理员');
-insert into sys_user values(2,  105, 'ry',    '若依', '00', 'ry@qq.com',  '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), sysdate(), 'admin', sysdate(), '', null, '测试员');
+insert into sys_user values(1,  103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), sysdate(), 1, null, null, null, null, null, null, 0, null, null, 'email', null, null, 'admin', sysdate(), '', null, '管理员');
+insert into sys_user values(2,  105, 'ry',    '若依', '00', 'ry@qq.com',  '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), sysdate(), 1, null, null, null, null, null, null, 0, null, null, 'email', null, null, 'admin', sysdate(), '', null, '测试员');
 
 
 -- ----------------------------
@@ -701,3 +717,208 @@ create table gen_table_column (
   update_time       datetime                                   comment '更新时间',
   primary key (column_id)
 ) engine=innodb auto_increment=1 comment = '代码生成业务表字段';
+
+
+-- ----------------------------
+-- 20、第三方登录关联表
+-- ----------------------------
+drop table if exists sys_user_oauth;
+create table sys_user_oauth (
+  id BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  user_id BIGINT NOT NULL COMMENT '用户ID',
+  oauth_type VARCHAR(20) NOT NULL COMMENT '第三方平台类型（google/github/discord/apple/facebook）',
+  oauth_user_id VARCHAR(100) NOT NULL COMMENT '第三方平台用户ID',
+  oauth_username VARCHAR(100) DEFAULT NULL COMMENT '第三方平台用户名',
+  oauth_email VARCHAR(100) DEFAULT NULL COMMENT '第三方平台邮箱',
+  oauth_avatar VARCHAR(255) DEFAULT NULL COMMENT '第三方平台头像',
+  access_token VARCHAR(500) DEFAULT NULL COMMENT '访问令牌',
+  refresh_token VARCHAR(500) DEFAULT NULL COMMENT '刷新令牌',
+  token_expire_time DATETIME DEFAULT NULL COMMENT '令牌过期时间',
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_user_oauth (user_id, oauth_type),
+  UNIQUE KEY uk_oauth_user (oauth_type, oauth_user_id),
+  KEY idx_user_id (user_id),
+  KEY idx_oauth_type (oauth_type),
+  CONSTRAINT fk_user_oauth_user_id FOREIGN KEY (user_id) REFERENCES sys_user (user_id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户第三方登录关联表';
+
+-- ----------------------------
+-- 21、邮箱验证码表
+-- ----------------------------
+drop table if exists sys_email_verify;
+create table sys_email_verify (
+  id BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  email VARCHAR(100) NOT NULL COMMENT '邮箱地址',
+  verify_code VARCHAR(64) NOT NULL COMMENT '验证码',
+  verify_type VARCHAR(20) NOT NULL COMMENT '验证类型（register/reset/rebind）',
+  expire_time DATETIME NOT NULL COMMENT '过期时间',
+  used TINYINT(1) DEFAULT 0 COMMENT '是否已使用（0未使用 1已使用）',
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (id),
+  KEY idx_email_type (email, verify_type),
+  KEY idx_expire_time (expire_time),
+  KEY idx_used (used)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='邮箱验证码表';
+
+-- ----------------------------
+-- 22、AI角色表
+-- ----------------------------
+drop table if exists ai_character;
+create table ai_character (
+  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  name varchar(100) NOT NULL COMMENT '角色名称',
+  description text COMMENT '角色描述',
+  personality text COMMENT '性格设定',
+  avatar_url varchar(500) DEFAULT NULL COMMENT '头像URL',
+  character_type varchar(20) DEFAULT 'girlfriend' COMMENT '角色类型：girlfriend-女友,friend-朋友,mentor-导师,assistant-助手',
+  creator_id bigint(20) NOT NULL COMMENT '创建者ID',
+  is_active tinyint(1) DEFAULT 1 COMMENT '是否激活',
+  is_public tinyint(1) DEFAULT 0 COMMENT '是否公开',
+  total_users int(11) DEFAULT 0 COMMENT '使用用户数',
+  total_conversations int(11) DEFAULT 0 COMMENT '总对话数',
+  total_messages int(11) DEFAULT 0 COMMENT '总消息数',
+  create_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  update_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  create_by varchar(64) DEFAULT '' COMMENT '创建者',
+  update_by varchar(64) DEFAULT '' COMMENT '更新者',
+  del_flag char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (id),
+  KEY idx_creator_id (creator_id),
+  KEY idx_character_type (character_type),
+  KEY idx_is_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='AI角色表';
+
+-- ----------------------------
+-- 23、用户角色关系表
+-- ----------------------------
+drop table if exists ai_user_character_relation;
+create table ai_user_character_relation (
+  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '关系ID',
+  user_id bigint(20) NOT NULL COMMENT '用户ID',
+  character_id bigint(20) NOT NULL COMMENT '角色ID',
+  relationship_level int(11) DEFAULT 1 COMMENT '关系等级(1-10)',
+  emotional_state varchar(50) DEFAULT 'neutral' COMMENT '情感状态',
+  trust_level int(11) DEFAULT 1 COMMENT '信任度(1-10)',
+  total_interactions int(11) DEFAULT 0 COMMENT '总互动次数',
+  total_messages int(11) DEFAULT 0 COMMENT '总消息数',
+  first_interaction_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '首次互动时间',
+  last_interaction_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后互动时间',
+  create_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  update_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  create_by varchar(64) DEFAULT '' COMMENT '创建者',
+  update_by varchar(64) DEFAULT '' COMMENT '更新者',
+  del_flag char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_user_character (user_id,character_id),
+  KEY idx_character_id (character_id),
+  KEY idx_user_id (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户角色关系表';
+
+-- ----------------------------
+-- 24、对话会话表
+-- ----------------------------
+drop table if exists ai_conversation;
+create table ai_conversation (
+  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '会话ID',
+  user_id bigint(20) NOT NULL COMMENT '用户ID',
+  character_id bigint(20) NOT NULL COMMENT '角色ID',
+  title varchar(200) DEFAULT NULL COMMENT '会话标题',
+  description text COMMENT '会话描述',
+  status varchar(20) DEFAULT 'active' COMMENT '状态：active-活跃,paused-暂停,ended-结束',
+  message_count int(11) DEFAULT 0 COMMENT '消息数量',
+  total_tokens int(11) DEFAULT 0 COMMENT '总Token数',
+  start_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '开始时间',
+  end_time datetime DEFAULT NULL COMMENT '结束时间',
+  last_message_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后消息时间',
+  create_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  update_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  create_by varchar(64) DEFAULT '' COMMENT '创建者',
+  update_by varchar(64) DEFAULT '' COMMENT '更新者',
+  del_flag char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (id),
+  KEY idx_user_id (user_id),
+  KEY idx_character_id (character_id),
+  KEY idx_status (status),
+  KEY idx_start_time (start_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='对话会话表';
+
+-- ----------------------------
+-- 25、消息表
+-- ----------------------------
+drop table if exists ai_message;
+create table ai_message (
+  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '消息ID',
+  conversation_id bigint(20) NOT NULL COMMENT '会话ID',
+  content text NOT NULL COMMENT '消息内容',
+  message_type varchar(20) NOT NULL COMMENT '消息类型：user-用户,ai-AI,system-系统',
+  tokens_used int(11) DEFAULT 0 COMMENT '使用的Token数',
+  model_used varchar(50) DEFAULT NULL COMMENT '使用的模型',
+  emotional_context json DEFAULT NULL COMMENT '情感上下文',
+  create_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  update_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  create_by varchar(64) DEFAULT '' COMMENT '创建者',
+  update_by varchar(64) DEFAULT '' COMMENT '更新者',
+  del_flag char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (id),
+  KEY idx_conversation_id (conversation_id),
+  KEY idx_message_type (message_type),
+  KEY idx_create_time (create_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息表';
+
+-- ----------------------------
+-- 26、角色模板表
+-- ----------------------------
+drop table if exists character_template;
+create table character_template (
+  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模板ID',
+  name varchar(100) NOT NULL COMMENT '模板名称',
+  description text COMMENT '模板描述',
+  category varchar(50) DEFAULT 'general' COMMENT '模板分类',
+  personality_template text COMMENT '性格模板',
+  conversation_style text COMMENT '对话风格',
+  background_story text COMMENT '背景故事',
+  avatar_url varchar(500) DEFAULT NULL COMMENT '默认头像URL',
+  is_active tinyint(1) DEFAULT 1 COMMENT '是否激活',
+  usage_count int(11) DEFAULT 0 COMMENT '使用次数',
+  create_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  update_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  create_by varchar(64) DEFAULT '' COMMENT '创建者',
+  update_by varchar(64) DEFAULT '' COMMENT '更新者',
+  del_flag char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (id),
+  KEY idx_category (category),
+  KEY idx_is_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色模板表';
+
+-- ----------------------------
+-- 初始化-系统配置数据（用户认证相关）
+-- ----------------------------
+insert into sys_config (config_name, config_key, config_value, config_type, create_by, create_time, remark) VALUES
+('用户注册开关', 'sys.account.registerUser', 'true', 'Y', 'admin', sysdate(), '是否允许用户注册'),
+('邮箱验证开关', 'sys.account.emailVerify', 'true', 'Y', 'admin', sysdate(), '是否启用邮箱验证'),
+('Google登录开关', 'sys.account.googleLogin', 'false', 'Y', 'admin', sysdate(), '是否启用Google登录'),
+('GitHub登录开关', 'sys.account.githubLogin', 'false', 'Y', 'admin', sysdate(), '是否启用GitHub登录'),
+('Discord登录开关', 'sys.account.discordLogin', 'false', 'Y', 'admin', sysdate(), '是否启用Discord登录'),
+('Apple登录开关', 'sys.account.appleLogin', 'false', 'Y', 'admin', sysdate(), '是否启用Apple登录'),
+('Facebook登录开关', 'sys.account.facebookLogin', 'false', 'Y', 'admin', sysdate(), '是否启用Facebook登录'),
+('密码最小长度', 'sys.account.passwordMinLength', '6', 'N', 'admin', sysdate(), '密码最小长度要求'),
+('密码最大长度', 'sys.account.passwordMaxLength', '20', 'N', 'admin', sysdate(), '密码最大长度要求')
+ON DUPLICATE KEY UPDATE 
+config_value = VALUES(config_value),
+update_time = sysdate();
+
+-- ----------------------------
+-- 初始化-普通用户角色
+-- ----------------------------
+insert into sys_role (role_name, role_key, role_sort, data_scope, menu_check_strictly, dept_check_strictly, status, del_flag, create_by, create_time, remark) VALUES
+('普通用户', 'common', 3, '1', 1, 1, '0', '0', 'admin', sysdate(), '普通用户角色')
+ON DUPLICATE KEY UPDATE 
+role_name = VALUES(role_name),
+update_time = sysdate();
+
+-- ----------------------------
+-- 更新现有用户的邮箱验证状态
+-- ----------------------------
+update sys_user set email_verified = 1 where email is not null and email != '' and email_verified is null;

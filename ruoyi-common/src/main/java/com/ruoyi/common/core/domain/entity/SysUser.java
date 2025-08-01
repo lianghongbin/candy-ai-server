@@ -82,6 +82,27 @@ public class SysUser extends BaseEntity
     /** 邮箱验证码过期时间 */
     private Date emailVerifyExpire;
 
+    /** 手机验证状态（0未验证 1已验证） */
+    private Integer phoneVerified;
+
+    /** 手机验证码 */
+    private String phoneVerifyCode;
+
+    /** 手机验证码过期时间 */
+    private Date phoneVerifyExpire;
+
+    /** 原邮箱验证码（用于换绑验证） */
+    private String oldEmailVerifyCode;
+
+    /** 原邮箱验证码过期时间 */
+    private Date oldEmailVerifyExpire;
+
+    /** 新邮箱验证码（用于换绑验证） */
+    private String newEmailVerifyCode;
+
+    /** 新邮箱验证码过期时间 */
+    private Date newEmailVerifyExpire;
+
     /** 注册来源（email/google/discord） */
     private String registerSource;
 
@@ -306,6 +327,76 @@ public class SysUser extends BaseEntity
     public void setEmailVerifyExpire(Date emailVerifyExpire)
     {
         this.emailVerifyExpire = emailVerifyExpire;
+    }
+
+    public Integer getPhoneVerified()
+    {
+        return phoneVerified;
+    }
+
+    public void setPhoneVerified(Integer phoneVerified)
+    {
+        this.phoneVerified = phoneVerified;
+    }
+
+    public String getPhoneVerifyCode()
+    {
+        return phoneVerifyCode;
+    }
+
+    public void setPhoneVerifyCode(String phoneVerifyCode)
+    {
+        this.phoneVerifyCode = phoneVerifyCode;
+    }
+
+    public Date getPhoneVerifyExpire()
+    {
+        return phoneVerifyExpire;
+    }
+
+    public void setPhoneVerifyExpire(Date phoneVerifyExpire)
+    {
+        this.phoneVerifyExpire = phoneVerifyExpire;
+    }
+
+    public String getOldEmailVerifyCode()
+    {
+        return oldEmailVerifyCode;
+    }
+
+    public void setOldEmailVerifyCode(String oldEmailVerifyCode)
+    {
+        this.oldEmailVerifyCode = oldEmailVerifyCode;
+    }
+
+    public Date getOldEmailVerifyExpire()
+    {
+        return oldEmailVerifyExpire;
+    }
+
+    public void setOldEmailVerifyExpire(Date oldEmailVerifyExpire)
+    {
+        this.oldEmailVerifyExpire = oldEmailVerifyExpire;
+    }
+
+    public String getNewEmailVerifyCode()
+    {
+        return newEmailVerifyCode;
+    }
+
+    public void setNewEmailVerifyCode(String newEmailVerifyCode)
+    {
+        this.newEmailVerifyCode = newEmailVerifyCode;
+    }
+
+    public Date getNewEmailVerifyExpire()
+    {
+        return newEmailVerifyExpire;
+    }
+
+    public void setNewEmailVerifyExpire(Date newEmailVerifyExpire)
+    {
+        this.newEmailVerifyExpire = newEmailVerifyExpire;
     }
 
     public String getRegisterSource()

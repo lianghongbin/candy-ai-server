@@ -131,20 +131,40 @@
   - 支持Google、GitHub、Discord、Apple、Facebook平台 ✅ 已完成
 
 #### 3. 用户管理功能
-- [ ] **用户信息修改接口** (`/api/user/profile`)
-  - 基本信息修改
-  - 头像上传
-  - 密码修改
-
-- [ ] **用户信息查询接口** (`/api/user/info`)
-  - 获取当前用户信息
-  - 获取用户详细信息
+- [x] **用户 Profile 管理** ✅ 已完成 (2025-08-01)
+  - 用户基本信息查询接口 (`/api/user/profile/info`) ✅ 已完成
+  - 用户基本信息更新接口 (`/api/user/profile/update`) ✅ 已完成
+  - 邮箱验证和替换功能 ✅ 已完成
+    - 发送原邮箱验证码 (`/api/user/profile/sendOldEmailVerifyCode`) ✅ 已完成
+    - 发送新邮箱验证码 (`/api/user/profile/sendNewEmailVerifyCode`) ✅ 已完成
+    - 验证原邮箱验证码 (`/api/user/profile/verifyOldEmailCode`) ✅ 已完成
+    - 验证新邮箱验证码并换绑 (`/api/user/profile/verifyNewEmailAndUpdate`) ✅ 已完成
+    - 解绑邮箱 (`/api/user/profile/unbindEmail`) ✅ 已完成
+  - 手机号验证和绑定功能 ✅ 已完成
+    - 发送手机验证码 (`/api/user/profile/sendPhoneVerifyCode`) ✅ 已完成
+    - 验证手机验证码并绑定 (`/api/user/profile/verifyPhoneAndBind`) ✅ 已完成
+    - 发送手机换绑验证码 (`/api/user/profile/sendPhoneChangeVerifyCode`) ✅ 已完成
+    - 验证手机验证码并换绑 (`/api/user/profile/verifyPhoneAndChange`) ✅ 已完成
+    - 解绑手机 (`/api/user/profile/unbindPhone`) ✅ 已完成
+  - 头像更新功能 (`/api/user/profile/updateAvatar`) ✅ 已完成
+  - 邮箱和手机号可用性检查 ✅ 已完成
+    - 邮箱可用性检查 (`/api/user/profile/checkEmail`) ✅ 已完成
+    - 手机号可用性检查 (`/api/user/profile/checkPhone`) ✅ 已完成
 
 #### 4. 数据库扩展
 - [x] **扩展用户表字段** ✅ 已完成 (2025-08-01)
-  - 添加第三方登录相关字段
-  - 添加用户注册来源字段
-  - 添加邮箱验证状态字段
+  - 添加第三方登录相关字段 ✅ 已完成
+  - 添加用户注册来源字段 ✅ 已完成
+  - 添加邮箱验证状态字段 ✅ 已完成
+  - 添加手机验证状态字段 ✅ 已完成
+  - 添加邮箱验证码相关字段 ✅ 已完成
+  - 添加手机验证码相关字段 ✅ 已完成
+  - 添加用户扩展信息字段 ✅ 已完成
+
+- [x] **数据库初始化脚本更新** ✅ 已完成 (2025-08-01)
+  - 更新 `scripts/sql/ry_20250522.sql` 初始化脚本 ✅ 已完成
+  - 创建 `scripts/sql/update_user_profile_fields.sql` 更新脚本 ✅ 已完成
+  - 支持现有数据库的字段添加 ✅ 已完成
 
 - [x] **创建第三方登录关联表** ✅ 已完成 (2025-08-01)
   - 存储第三方平台用户ID
