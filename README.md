@@ -1,17 +1,43 @@
 <p align="center">
 	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
 </p>
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">RuoYi v3.9.0</h1>
-<h4 align="center">基于SpringBoot+Vue前后端分离的Java快速开发框架</h4>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">Candy AI v1.0.1</h1>
+<h4 align="center">基于Spring Boot 3 + Vue 2前后端分离的AI虚拟女友管理系统</h4>
 <p align="center">
-	<a href="https://gitee.com/y_project/RuoYi-Vue/stargazers"><img src="https://gitee.com/y_project/RuoYi-Vue/badge/star.svg?theme=dark"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Vue"><img src="https://img.shields.io/badge/RuoYi-v3.9.0-brightgreen.svg"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Vue/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
+	<a href="https://github.com/lianghongbin/candy-ai-server/stargazers"><img src="https://img.shields.io/github/stars/lianghongbin/candy-ai-server?style=social"></a>
+	<a href="https://github.com/lianghongbin/candy-ai-server"><img src="https://img.shields.io/badge/Candy%20AI-v1.0.1-brightgreen.svg"></a>
+	<a href="https://github.com/lianghongbin/candy-ai-server/blob/main/LICENSE"><img src="https://img.shields.io/github/license/lianghongbin/candy-ai-server.svg"></a>
 </p>
 
 # Candy AI 虚拟女友管理系统
 
-基于若依框架开发的AI虚拟女友管理系统，提供角色管理、对话功能、用户管理等核心功能。
+基于若依框架(RuoYi v3.9.0)开发的AI虚拟女友管理系统，提供角色管理、对话功能、用户管理等核心功能。
+
+## 🛠️ 技术栈
+
+### 后端技术
+- **框架**: Spring Boot 3.3.5
+- **基础框架**: 若依(RuoYi) v3.9.0
+- **数据库**: MySQL 8.0+
+- **缓存**: Redis 6.0+
+- **ORM**: MyBatis Plus
+- **安全**: Spring Security + JWT
+- **任务调度**: Quartz
+- **API文档**: SpringDoc OpenAPI 3
+
+### 前端技术
+- **框架**: Vue 2.6.12
+- **UI组件**: Element UI 2.15.14
+- **构建工具**: Vue CLI 4.4.6
+- **路由**: Vue Router 3.4.9
+- **状态管理**: Vuex 3.6.0
+- **HTTP客户端**: Axios 0.28.1
+
+### 开发工具
+- **构建工具**: Maven 3.6+
+- **包管理**: npm 8+
+- **版本控制**: Git
+- **IDE推荐**: IntelliJ IDEA / VS Code
 
 ## 🚀 快速开始
 
@@ -169,12 +195,30 @@ mvn test
 
 本项目基于 [MIT License](LICENSE) 开源。
 
+### 致谢
+- 感谢 [若依(RuoYi)](https://gitee.com/y_project/RuoYi-Vue) 框架提供的优秀基础架构
+- 感谢所有开源项目的贡献者
+
 ## 🤝 贡献
 
 欢迎提交 Issue 和 Pull Request！
 
+### 贡献指南
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开 Pull Request
+
 ## 📞 联系方式
 
 如有问题，请通过以下方式联系：
-- 提交 Issue
-- 发送邮件
+- [GitHub Issues](https://github.com/lianghongbin/candy-ai-server/issues)
+- [项目主页](https://github.com/lianghongbin/candy-ai-server)
+
+## 📈 项目状态
+
+- **当前版本**: v1.0.1
+- **状态**: 开发中
+- **最后更新**: 2025-08-01
+- **支持**: 持续维护
