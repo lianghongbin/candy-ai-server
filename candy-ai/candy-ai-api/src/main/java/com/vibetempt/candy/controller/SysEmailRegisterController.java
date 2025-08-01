@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.annotation.Anonymous;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
@@ -25,6 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * @author candy
  */
 @Tag(name = "邮箱注册管理")
+@Anonymous
 @RestController
 @RequestMapping("/auth/email")
 public class SysEmailRegisterController extends BaseController {

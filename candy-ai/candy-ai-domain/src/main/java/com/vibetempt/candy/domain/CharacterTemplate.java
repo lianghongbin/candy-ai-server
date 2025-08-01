@@ -71,4 +71,13 @@ public class CharacterTemplate extends BaseEntity {
 
     /** 备注 */
     private String remark;
+
+    // 手动添加 setter 方法（Lombok 可能没有正常工作）
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setTemplateType(String templateType) {
+        this.templateType = templateType;
+    }
 } 

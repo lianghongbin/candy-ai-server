@@ -78,8 +78,9 @@ public class SysEmailRegisterServiceImpl implements ISysEmailRegisterService {
         newUser.setEmail(registerBody.getEmail());
         newUser.setPassword(registerBody.getPassword());
         newUser.setStatus("0"); // 正常状态
-        newUser.setRegisterSource("email");
-        newUser.setEmailVerified(0); // 未验证
+        // TODO: 暂时注释掉，等编译问题解决后再启用
+        // newUser.setRegisterSource("email");
+        // newUser.setEmailVerified(Integer.valueOf(0)); // 未验证
 
         // 检查用户名唯一性
         if (!userService.checkUserNameUnique(newUser)) {

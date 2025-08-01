@@ -58,4 +58,21 @@ public class AiCharacter extends BaseEntity {
 
     /** 备注 */
     private String remark;
+
+    // 手动添加 setter 方法（Lombok 可能没有正常工作）
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
+    }
+
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setOwnerUserId(Long ownerUserId) {
+        this.ownerUserId = ownerUserId;
+    }
 } 
