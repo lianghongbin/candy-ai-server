@@ -56,13 +56,11 @@
         </dependency>
 
         <!-- Candy AI API -->
-        <!-- 暂时注释掉，等candy-ai-api模块编译问题解决后再启用
         <dependency>
             <groupId>com.vibetempt</groupId>
             <artifactId>candy-ai-api</artifactId>
             <version>1.0.0</version>
         </dependency>
-        -->
 
         <!-- 测试依赖 -->
         <dependency>

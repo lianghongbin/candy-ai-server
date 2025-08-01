@@ -1,6 +1,7 @@
 package com.vibetempt.candy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.system.service.ISysConfigService;
 import com.vibetempt.candy.domain.model.EmailRegisterBody;
-import com.vibetempt.candy.service.ISysEmailRegisterService;
+import com.vibetempt.candy.service.SysEmailRegisterService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,7 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class SysEmailRegisterController extends BaseController {
 
     @Autowired
-    private ISysEmailRegisterService emailRegisterService;
+    private SysEmailRegisterService emailRegisterService;
 
     @Autowired
     private ISysConfigService configService;
@@ -96,6 +97,17 @@ public class SysEmailRegisterController extends BaseController {
     @Log(title = "检查邮箱注册状态", businessType = BusinessType.OTHER)
     @PostMapping("/checkEmail")
     public AjaxResult checkEmail(@Parameter(description = "邮箱地址") @RequestParam String email) {
+        boolean isRegistered = emailRegisterService.isEmailRegistered(email);
+        return success().put("isRegistered", isRegistered);
+    }
+
+    /**
+     * 检查邮箱是否已注册 (GET方法)
+     */
+    @Operation(summary = "检查邮箱是否已注册", description = "检查指定邮箱是否已经被注册")
+    @Log(title = "检查邮箱注册状态", businessType = BusinessType.OTHER)
+    @GetMapping("/check")
+    public AjaxResult checkEmailGet(@Parameter(description = "邮箱地址") @RequestParam String email) {
         boolean isRegistered = emailRegisterService.isEmailRegistered(email);
         return success().put("isRegistered", isRegistered);
     }

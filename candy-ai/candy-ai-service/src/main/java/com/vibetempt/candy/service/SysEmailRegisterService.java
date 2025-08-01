@@ -7,7 +7,7 @@ import com.vibetempt.candy.domain.model.EmailRegisterBody;
  * 
  * @author candy
  */
-public interface ISysEmailRegisterService {
+public interface SysEmailRegisterService {
     
     /**
      * 邮箱注册

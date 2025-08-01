@@ -3,7 +3,7 @@ package com.vibetempt.candy.service.impl;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.vibetempt.candy.domain.AiCharacter;
 import com.vibetempt.candy.domain.mapper.AiCharacterMapper;
-import com.vibetempt.candy.service.IAiCharacterService;
+import com.vibetempt.candy.service.AiCharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @author vibetempt
  */
 @Service
-public class AiCharacterServiceImpl implements IAiCharacterService {
+public class AiCharacterServiceImpl implements AiCharacterService {
     
     @Autowired
     private AiCharacterMapper aiCharacterMapper;

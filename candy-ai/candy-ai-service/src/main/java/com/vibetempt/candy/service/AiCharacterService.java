@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author vibetempt
  */
-public interface IAiCharacterService {
+public interface AiCharacterService {
     
     /**
      * 根据条件分页查询 AI 角色列表

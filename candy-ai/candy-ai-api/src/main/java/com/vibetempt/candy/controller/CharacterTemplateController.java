@@ -34,7 +34,7 @@ public class CharacterTemplateController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(CharacterTemplate characterTemplate) {
         startPage();
-        List<CharacterTemplate> list = characterTemplateService.selectCharacterTemplatePage(characterTemplate);
+        List<CharacterTemplate> list = characterTemplateService.selectCharacterTemplateList(characterTemplate);
         return getDataTable(list);
     }
     

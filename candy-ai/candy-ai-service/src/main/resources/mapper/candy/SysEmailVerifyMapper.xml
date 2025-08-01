@@ -12,11 +12,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="used" column="used"/>
         <result property="expireTime" column="expire_time"/>
         <result property="createTime" column="create_time"/>
-        <result property="usedTime" column="used_time"/>
     </resultMap>
 
     <sql id="selectSysEmailVerifyVo">
-        select id, email, verify_code, verify_type, used, expire_time, create_time, used_time from sys_email_verify
+        select id, email, verify_code, verify_type, used, expire_time, create_time from sys_email_verify
     </sql>
 
     <select id="selectSysEmailVerifyList" parameterType="com.vibetempt.candy.domain.entity.SysEmailVerify" resultMap="SysEmailVerifyResult">
@@ -43,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <update id="markVerifyCodeAsUsed" parameterType="Long">
-        update sys_email_verify set used = 1, used_time = now() where id = #{id}
+        update sys_email_verify set used = 1 where id = #{id}
     </update>
 
     <delete id="cleanExpiredVerifyCodes">
@@ -59,7 +58,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="used != null">used,</if>
             <if test="expireTime != null">expire_time,</if>
             <if test="createTime != null">create_time,</if>
-            <if test="usedTime != null">used_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="email != null and email != ''">#{email},</if>
@@ -68,7 +66,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="used != null">#{used},</if>
             <if test="expireTime != null">#{expireTime},</if>
             <if test="createTime != null">#{createTime},</if>
-            <if test="usedTime != null">#{usedTime},</if>
          </trim>
     </insert>
 
@@ -81,7 +78,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="used != null">used = #{used},</if>
             <if test="expireTime != null">expire_time = #{expireTime},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
-            <if test="usedTime != null">used_time = #{usedTime},</if>
         </trim>
         where id = #{id}
     </update>

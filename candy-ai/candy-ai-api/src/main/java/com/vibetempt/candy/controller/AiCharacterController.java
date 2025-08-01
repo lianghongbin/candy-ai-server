@@ -25,7 +25,7 @@ import java.util.List;
 public class AiCharacterController extends BaseController {
     
     @Autowired
-    private IAiCharacterService aiCharacterService;
+    private AiCharacterService aiCharacterService;
     
     /**
      * 查询 AI 角色列表

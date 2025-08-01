@@ -12,7 +12,7 @@ import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
 import com.vibetempt.candy.domain.entity.SysEmailVerify;
 import com.vibetempt.candy.domain.model.EmailRegisterBody;
-import com.vibetempt.candy.service.ISysEmailRegisterService;
+import com.vibetempt.candy.service.SysEmailRegisterService;
 import com.vibetempt.candy.service.mapper.SysEmailVerifyMapper;
 
 /**
@@ -21,7 +21,7 @@ import com.vibetempt.candy.service.mapper.SysEmailVerifyMapper;
  * @author candy
  */
 @Service
-public class SysEmailRegisterServiceImpl implements ISysEmailRegisterService {
+public class SysEmailRegisterServiceImpl implements SysEmailRegisterService {
 
     @Autowired
     private ISysUserService userService;

@@ -1,6 +1,7 @@
 package com.vibetempt.candy.domain.mapper;
 
 import com.vibetempt.candy.domain.AiCharacter;
+import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
@@ -8,6 +9,7 @@ import java.util.List;
  * 
  * @author vibetempt
  */
+@Mapper
 public interface AiCharacterMapper {
     
     /**

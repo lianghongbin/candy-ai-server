@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vibetempt.candy.domain.mapper.AiCharacterMapper">
     
-    <resultMap type="AiCharacter" id="AiCharacterResult">
+    <resultMap type="com.vibetempt.candy.domain.AiCharacter" id="AiCharacterResult">
         <id     property="characterId"      column="character_id"      />
         <result property="characterName"    column="character_name"    />
         <result property="description"      column="description"       />
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from candy_ai_character
     </sql>
     
-    <select id="selectAiCharacterList" parameterType="AiCharacter" resultMap="AiCharacterResult">
+    <select id="selectAiCharacterList" parameterType="com.vibetempt.candy.domain.AiCharacter" resultMap="AiCharacterResult">
         <include refid="selectAiCharacterVo"/>
         <where>  
             <if test="characterName != null and characterName != ''">
@@ -50,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where character_id = #{characterId}
     </select>
     
-    <insert id="insertAiCharacter" parameterType="AiCharacter" useGeneratedKeys="true" keyProperty="characterId">
+    <insert id="insertAiCharacter" parameterType="com.vibetempt.candy.domain.AiCharacter" useGeneratedKeys="true" keyProperty="characterId">
         insert into candy_ai_character(
             <if test="characterName != null and characterName != ''">character_name,</if>
             <if test="description != null and description != ''">description,</if>
@@ -74,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
     </insert>
     
-    <update id="updateAiCharacter" parameterType="AiCharacter">
+    <update id="updateAiCharacter" parameterType="com.vibetempt.candy.domain.AiCharacter">
         update candy_ai_character
         <set>
             <if test="characterName != null and characterName != ''">character_name = #{characterName},</if>

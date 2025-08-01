@@ -1,3 +1,23 @@
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# 应用基础配置
+app:
+  # 应用基础信息
+  name: Candy AI
+  version: 1.0.1
+  # 服务器地址配置
+  server:
+    protocol: http
+    host: localhost
+    port: 8080
+    context-path: /
+  # 构建完整的服务器URL
+  base-url: ${app.server.protocol}://${app.server.host}:${app.server.port}${app.server.context-path}
+
 # 开发环境配置
 spring:
   # 数据源配置
@@ -85,6 +105,33 @@ spring:
           # #连接池最大阻塞等待时间（使用负值表示没有限制）
           max-wait: -1ms
 
+# Candy AI 缓存配置
+candy:
+  cache:
+    enabled: false  # 开发环境禁用缓存，使用真实数据
+  # OAuth 第三方登录配置
+  oauth:
+    google:
+      client-id: ${GOOGLE_CLIENT_ID:your-google-client-id}
+      client-secret: ${GOOGLE_CLIENT_SECRET:your-google-client-secret}
+      redirect-uri: ${app.base-url}/auth/oauth/callback/google
+    github:
+      client-id: ${GITHUB_CLIENT_ID:your-github-client-id}
+      client-secret: ${GITHUB_CLIENT_SECRET:your-github-client-secret}
+      redirect-uri: ${app.base-url}/auth/oauth/callback/github
+    discord:
+      client-id: ${DISCORD_CLIENT_ID:your-discord-client-id}
+      client-secret: ${DISCORD_CLIENT_SECRET:your-discord-client-secret}
+      redirect-uri: ${app.base-url}/auth/oauth/callback/discord
+    apple:
+      client-id: ${APPLE_CLIENT_ID:your-apple-client-id}
+      client-secret: ${APPLE_CLIENT_SECRET:your-apple-client-secret}
+      redirect-uri: ${app.base-url}/auth/oauth/callback/apple
+    facebook:
+      client-id: ${FACEBOOK_CLIENT_ID:your-facebook-client-id}
+      client-secret: ${FACEBOOK_CLIENT_SECRET:your-facebook-client-secret}
+      redirect-uri: ${app.base-url}/auth/oauth/callback/facebook
+
 # 日志配置
 logging:
   level:
@@ -100,6 +147,8 @@ ruoyi:
   addressEnabled: false
   # 验证码类型 math 数字计算 char 字符验证
   captchaType: math
+  # 开发环境禁用验证码
+  captchaEnabled: false
   # 数据库表前缀配置
   tablePrefix:
     ruoyi: ""        # RuoYi 系统表无前缀（保持原样）

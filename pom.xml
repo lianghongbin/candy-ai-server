@@ -109,6 +109,12 @@
                 <version>${springdoc.version}</version>
             </dependency>
 
+            <!-- Spring Security OAuth2 第三方登录 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-oauth2-client</artifactId>
+            </dependency>
+
             <!-- io常用工具类 -->
             <dependency>
                 <groupId>commons-io</groupId>
