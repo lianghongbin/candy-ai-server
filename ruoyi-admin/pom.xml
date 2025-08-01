@@ -3,9 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ruoyi</artifactId>
-        <groupId>com.ruoyi</groupId>
-        <version>3.9.0</version>
+        <artifactId>candy-ai-server</artifactId>
+        <groupId>com.vibetempt</groupId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
@@ -55,11 +56,13 @@
         </dependency>
 
         <!-- Candy AI API -->
+        <!-- 暂时注释掉，等candy-ai模块完善后再启用
         <dependency>
             <groupId>com.vibetempt</groupId>
             <artifactId>candy-ai-api</artifactId>
             <version>1.0.0</version>
         </dependency>
+        -->
 
     </dependencies>
 

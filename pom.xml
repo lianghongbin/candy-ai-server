@@ -13,7 +13,7 @@
     <description>Candy AI 虚拟女友管理系统</description>
     
     <properties>
-        <ruoyi.version>3.9.0</ruoyi.version>
+        <ruoyi.version>1.0.0</ruoyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>

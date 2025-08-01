@@ -1,7 +1,5 @@
 package com.vibetempt.candy.domain.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.vibetempt.candy.common.query.QueryCondition;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
