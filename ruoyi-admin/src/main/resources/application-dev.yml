@@ -90,9 +90,7 @@ logging:
   level:
     com.ruoyi: debug
     org.springframework: warn
-  # 开发环境启用SQL日志
-  level:
-    com.ruoyi.system.mapper: debug
+    com.ruoyi.system.mapper: debug  # 开发环境启用SQL日志
 
 # 开发环境配置
 ruoyi:

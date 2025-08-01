@@ -19,6 +19,7 @@
 
 - **Java**: 17+
 - **Maven**: 3.6+
+- **Node.js**: 16+
 - **MySQL**: 8.0+
 - **Redis**: 6.0+
 
@@ -38,13 +39,22 @@ cd candy-ai-server
 
 ### 3. 启动应用
 
-#### 开发环境
+#### 方式一：完整启动（推荐）
 ```bash
-# 使用启动脚本（推荐）
+# 一键启动前后端
+./scripts/start_full.sh
+
+# 停止所有服务
+./scripts/stop_full.sh
+```
+
+#### 方式二：分别启动
+```bash
+# 后端启动
 ./scripts/start.sh -p dev
 
-# 或使用Maven
-mvn spring-boot:run -pl ruoyi-admin -Dspring.profiles.active=dev
+# 前端启动（新终端）
+cd ruoyi-ui && npm run dev
 ```
 
 #### 生产环境
@@ -104,7 +114,12 @@ candy-ai-server/
 - **默认管理员密码**: admin123
 
 ### 前端项目
-前端项目在 `ruoyi-ui` 目录，需要单独启动：
+- **应用地址**: http://localhost:1024
+- **项目目录**: `ruoyi-ui`
+- **技术栈**: Vue 2 + Element UI
+- **代理配置**: 自动代理到后端 8080 端口
+
+前端项目需要单独启动：
 ```bash
 cd ruoyi-ui
 npm install
