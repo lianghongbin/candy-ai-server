@@ -1,139 +1,155 @@
-# Candy AI 项目初始化指南
+# Candy AI 脚本说明
 
-## 环境要求
+本目录包含了 Candy AI 项目的各种启动、停止和管理脚本。
 
+## 📁 脚本列表
+
+### 🚀 启动脚本
+
+#### 1. `start_full.sh` - 完整启动脚本（推荐）
+**功能**: 一键启动前后端服务
+**用法**: `./scripts/start_full.sh`
+**特点**: 
+- 自动检查环境（Java、Node.js、MySQL、Redis）
+- 先启动后端，再启动前端
+- 自动测试前后端通信
+- 保存进程PID到文件
+
+#### 2. `start.sh` - 后端启动脚本
+**功能**: 单独启动后端服务
+**用法**: 
+```bash
+./scripts/start.sh              # 使用默认环境(dev)
+./scripts/start.sh -p dev       # 启动开发环境
+./scripts/start.sh -p prod      # 启动生产环境
+```
+**特点**:
+- 支持开发环境和生产环境
+- 后台运行并保存PID
+- 自动等待服务启动完成
+
+#### 3. `start_frontend.sh` - 前端启动脚本
+**功能**: 单独启动前端服务
+**用法**: `./scripts/start_frontend.sh`
+**特点**:
+- 自动检查Node.js和npm环境
+- 自动安装依赖（如果未安装）
+- 后台运行并保存PID
+- 自动等待服务启动完成
+
+### 🛑 停止脚本
+
+#### 1. `stop_full.sh` - 完整停止脚本
+**功能**: 停止所有服务
+**用法**: `./scripts/stop_full.sh`
+**特点**: 停止前端和后端所有相关进程
+
+#### 2. `stop_backend.sh` - 后端停止脚本
+**功能**: 单独停止后端服务
+**用法**: `./scripts/stop_backend.sh`
+**特点**: 通过PID文件优雅停止，并强制清理相关进程
+
+#### 3. `stop_frontend.sh` - 前端停止脚本
+**功能**: 单独停止前端服务
+**用法**: `./scripts/stop_frontend.sh`
+**特点**: 通过PID文件优雅停止，并强制清理相关进程
+
+### 🗄️ 数据库脚本
+
+#### `init_database.sh` - 数据库初始化脚本
+**功能**: 初始化数据库和表结构
+**用法**: `./scripts/init_database.sh`
+**特点**: 
+- 自动创建数据库
+- 导入SQL脚本
+- 支持密码配置
+
+## 🎯 使用场景
+
+### 开发环境
+```bash
+# 方式一：一键启动（推荐）
+./scripts/start_full.sh
+
+# 方式二：分别启动
+./scripts/start.sh -p dev        # 启动后端
+./scripts/start_frontend.sh      # 启动前端（新终端）
+```
+
+### 生产环境
+```bash
+# 设置环境变量
+export DB_HOST=your-db-host
+export DB_PASSWORD=your-db-password
+export REDIS_HOST=your-redis-host
+export REDIS_PASSWORD=your-redis-password
+
+# 启动服务
+./scripts/start.sh -p prod
+```
+
+### 停止服务
+```bash
+# 停止所有服务
+./scripts/stop_full.sh
+
+# 或分别停止
+./scripts/stop_backend.sh
+./scripts/stop_frontend.sh
+```
+
+## 📊 日志文件
+
+所有脚本的日志文件都保存在 `logs/` 目录下：
+- `logs/backend.log` - 后端日志
+- `logs/frontend.log` - 前端日志
+- `logs/backend.pid` - 后端进程PID
+- `logs/frontend.pid` - 前端进程PID
+
+## 🔧 环境要求
+
+### 后端启动要求
 - Java 17+
-- MySQL 8.0+
 - Maven 3.6+
-- Redis (可选，用于缓存)
+- MySQL 8.0+
+- Redis 6.0+
 
-## 数据库初始化
+### 前端启动要求
+- Node.js 16+
+- npm 8+
 
-### 1. 确保MySQL服务正在运行
+## 🚨 常见问题
 
+### 端口冲突
+如果遇到端口冲突，脚本会自动选择下一个可用端口：
+- 后端默认端口：8080
+- 前端默认端口：80（如果被占用会自动选择1024等）
+
+### 进程管理
+所有脚本都使用PID文件管理进程，确保可以优雅停止：
 ```bash
-# macOS (使用Homebrew)
-brew services start mysql
+# 查看进程状态
+ps aux | grep java | grep ruoyi
+ps aux | grep vue-cli-service
 
-# 检查服务状态
-brew services list | grep mysql
+# 强制停止（如果脚本无法停止）
+pkill -f "RuoYiApplication"
+pkill -f "vue-cli-service"
 ```
 
-### 2. 运行数据库初始化脚本
-
+### 日志查看
 ```bash
-# 进入项目根目录
-cd candy-ai-server
+# 实时查看后端日志
+tail -f logs/backend.log
 
-# 运行初始化脚本
-./scripts/init_database.sh
+# 实时查看前端日志
+tail -f logs/frontend.log
 ```
 
-脚本会提示你输入MySQL root用户密码。如果MySQL root用户没有密码，直接按回车即可。
+## 📝 注意事项
 
-### 3. 验证数据库初始化
-
-```bash
-# 连接到数据库
-mysql -u root -p candy_ai
-
-# 查看表列表
-SHOW TABLES;
-```
-
-你应该能看到以下表：
-- 系统表：sys_* (用户、角色、菜单等)
-- 定时任务表：QRTZ_* 
-- AI相关表：ai_* (角色、对话、消息等)
-
-## 配置数据库连接
-
-确保 `ruoyi-admin/src/main/resources/application-druid.yml` 中的数据库配置正确：
-
-```yaml
-master:
-    url: jdbc:mysql://localhost:3306/candy_ai?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-    username: root
-    password: "你的MySQL密码"  # 请修改为实际密码
-```
-
-## 启动项目
-
-### 1. 编译项目
-
-```bash
-mvn clean compile
-```
-
-### 2. 启动应用
-
-```bash
-# 方式1：使用Maven
-mvn spring-boot:run -pl ruoyi-admin
-
-# 方式2：直接运行主类
-cd ruoyi-admin
-mvn spring-boot:run
-```
-
-### 3. 访问应用
-
-- 后台管理：http://localhost:8080
-- 默认管理员账号：admin
-- 默认管理员密码：admin123
-- API文档：http://localhost:8080/swagger-ui.html
-- 数据库监控：http://localhost:8080/druid
-
-## 常见问题
-
-### 1. 数据库连接失败
-
-- 检查MySQL服务是否正在运行
-- 检查数据库用户名和密码是否正确
-- 检查数据库是否已创建
-
-### 2. 端口被占用
-
-如果8080端口被占用，可以修改 `application.yml` 中的端口配置：
-
-```yaml
-server:
-  port: 8081  # 修改为其他可用端口
-```
-
-### 3. Java版本问题
-
-确保使用Java 17或更高版本：
-
-```bash
-java -version
-```
-
-### 4. Maven依赖下载失败
-
-可以尝试使用阿里云镜像：
-
-```bash
-# 在项目根目录创建 .mvn/settings.xml
-mkdir -p .mvn
-```
-
-然后在 `.mvn/settings.xml` 中添加阿里云镜像配置。
-
-## 项目结构
-
-```
-candy-ai-server/
-├── ruoyi-admin/          # 主启动模块
-├── ruoyi-common/         # 通用工具模块
-├── ruoyi-framework/      # 核心框架模块
-├── ruoyi-system/         # 系统管理模块
-├── ruoyi-quartz/         # 定时任务模块
-├── ruoyi-generator/      # 代码生成模块
-├── candy-ai/             # AI业务模块
-│   ├── candy-ai-domain/  # 领域模型
-│   ├── candy-ai-service/ # 业务服务
-│   └── candy-ai-api/     # API接口
-└── scripts/              # 脚本文件
-    └── sql/              # 数据库脚本
-``` 
+1. **权限**: 确保脚本有执行权限 `chmod +x scripts/*.sh`
+2. **目录**: 请在项目根目录下运行脚本
+3. **环境**: 确保相关服务（MySQL、Redis）已启动
+4. **网络**: 确保端口未被其他程序占用
+5. **依赖**: 前端首次运行会自动安装依赖，请保持网络连接 

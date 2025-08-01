@@ -69,9 +69,42 @@ start_application() {
         exit 1
     fi
     
+    # 创建logs目录
+    mkdir -p logs
+    
     # 启动应用
     echo "使用 Maven 启动应用..."
-    mvn spring-boot:run -pl ruoyi-admin -Dspring.profiles.active=$profile
+    nohup mvn spring-boot:run -pl ruoyi-admin -Dspring.profiles.active=$profile > logs/backend.log 2>&1 &
+    BACKEND_PID=$!
+    
+    echo "✓ 后端启动中 (PID: $BACKEND_PID)"
+    
+    # 等待后端启动
+    echo "等待后端启动..."
+    for i in {1..30}; do
+        if curl -s http://localhost:8080 > /dev/null 2>&1; then
+            echo "✓ 后端启动成功 (http://localhost:8080)"
+            break
+        fi
+        if [ $i -eq 30 ]; then
+            echo "错误: 后端启动超时"
+            exit 1
+        fi
+        sleep 2
+    done
+    
+    # 保存PID到文件
+    echo "$BACKEND_PID" > logs/backend.pid
+    
+    echo "=================================="
+    echo "🎉 后端启动完成！"
+    echo "=================================="
+    echo "后端地址: http://localhost:8080"
+    echo "API文档: http://localhost:8080/swagger-ui.html"
+    echo "=================================="
+    echo "日志文件: logs/backend.log"
+    echo "停止后端: ./scripts/stop_backend.sh"
+    echo "=================================="
 }
 
 # 主函数
