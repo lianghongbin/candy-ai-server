@@ -178,6 +178,7 @@ create table sys_menu (
 insert into sys_menu values('1', '系统管理', '0', '1', 'system',           null, '', '', 1, 0, 'M', '0', '0', '', 'system',   'admin', sysdate(), '', null, '系统管理目录');
 insert into sys_menu values('2', '系统监控', '0', '2', 'monitor',          null, '', '', 1, 0, 'M', '0', '0', '', 'monitor',  'admin', sysdate(), '', null, '系统监控目录');
 insert into sys_menu values('3', '系统工具', '0', '3', 'tool',             null, '', '', 1, 0, 'M', '0', '0', '', 'tool',     'admin', sysdate(), '', null, '系统工具目录');
+insert into sys_menu values('4', 'Candy AI', '0', '4', 'candy',            null, '', '', 1, 0, 'M', '0', '0', '', 'candy',    'admin', sysdate(), '', null, 'Candy AI管理目录');
 -- 二级菜单
 insert into sys_menu values('100',  '用户管理', '1',   '1', 'user',       'system/user/index',        '', '', 1, 0, 'C', '0', '0', 'system:user:list',        'user',          'admin', sysdate(), '', null, '用户管理菜单');
 insert into sys_menu values('101',  '角色管理', '1',   '2', 'role',       'system/role/index',        '', '', 1, 0, 'C', '0', '0', 'system:role:list',        'peoples',       'admin', sysdate(), '', null, '角色管理菜单');
@@ -197,6 +198,11 @@ insert into sys_menu values('114',  '缓存列表', '2',   '6', 'cacheList',  'm
 insert into sys_menu values('115',  '表单构建', '3',   '1', 'build',      'tool/build/index',         '', '', 1, 0, 'C', '0', '0', 'tool:build:list',         'build',         'admin', sysdate(), '', null, '表单构建菜单');
 insert into sys_menu values('116',  '代码生成', '3',   '2', 'gen',        'tool/gen/index',           '', '', 1, 0, 'C', '0', '0', 'tool:gen:list',           'code',          'admin', sysdate(), '', null, '代码生成菜单');
 insert into sys_menu values('117',  '系统接口', '3',   '3', 'swagger',    'tool/swagger/index',       '', '', 1, 0, 'C', '0', '0', 'tool:swagger:list',       'swagger',       'admin', sysdate(), '', null, '系统接口菜单');
+-- Candy AI 二级菜单
+insert into sys_menu values('400',  '用户管理', '4',   '1', 'user',       'candy/user/index',         '', '', 1, 0, 'C', '0', '0', 'candy:user:list',         'user',          'admin', sysdate(), '', null, 'Candy AI用户管理菜单');
+insert into sys_menu values('401',  '角色管理', '4',   '2', 'role',       'candy/role/index',         '', '', 1, 0, 'C', '0', '0', 'candy:role:list',         'peoples',       'admin', sysdate(), '', null, 'Candy AI角色管理菜单');
+insert into sys_menu values('402',  '对话管理', '4',   '3', 'conversation', 'candy/conversation/index', '', '', 1, 0, 'C', '0', '0', 'candy:conversation:list', 'message',       'admin', sysdate(), '', null, 'Candy AI对话管理菜单');
+insert into sys_menu values('403',  '系统设置', '4',   '4', 'setting',    'candy/setting/index',      '', '', 1, 0, 'C', '0', '0', 'candy:setting:list',      'system',        'admin', sysdate(), '', null, 'Candy AI系统设置菜单');
 -- 三级菜单
 insert into sys_menu values('500',  '操作日志', '108', '1', 'operlog',    'monitor/operlog/index',    '', '', 1, 0, 'C', '0', '0', 'monitor:operlog:list',    'form',          'admin', sysdate(), '', null, '操作日志菜单');
 insert into sys_menu values('501',  '登录日志', '108', '2', 'logininfor', 'monitor/logininfor/index', '', '', 1, 0, 'C', '0', '0', 'monitor:logininfor:list', 'logininfor',    'admin', sysdate(), '', null, '登录日志菜单');
@@ -274,6 +280,26 @@ insert into sys_menu values('1057', '生成删除', '116', '3', '#', '', '', '',
 insert into sys_menu values('1058', '导入代码', '116', '4', '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:import',            '#', 'admin', sysdate(), '', null, '');
 insert into sys_menu values('1059', '预览代码', '116', '5', '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:preview',           '#', 'admin', sysdate(), '', null, '');
 insert into sys_menu values('1060', '生成代码', '116', '6', '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:code',              '#', 'admin', sysdate(), '', null, '');
+-- Candy AI 用户管理按钮权限
+insert into sys_menu values('4000', '用户查询', '400', '1', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:user:query',          '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4001', '用户新增', '400', '2', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:user:add',            '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4002', '用户修改', '400', '3', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:user:edit',           '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4003', '用户删除', '400', '4', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:user:remove',         '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4004', '用户导出', '400', '5', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:user:export',         '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4005', '重置密码', '400', '6', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:user:resetPwd',       '#', 'admin', sysdate(), '', null, '');
+-- Candy AI 角色管理按钮权限
+insert into sys_menu values('4010', '角色查询', '401', '1', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:role:query',          '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4011', '角色新增', '401', '2', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:role:add',            '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4012', '角色修改', '401', '3', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:role:edit',           '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4013', '角色删除', '401', '4', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:role:remove',         '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4014', '角色导出', '401', '5', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:role:export',         '#', 'admin', sysdate(), '', null, '');
+-- Candy AI 对话管理按钮权限
+insert into sys_menu values('4020', '对话查询', '402', '1', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:conversation:query',   '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4021', '对话删除', '402', '2', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:conversation:remove',  '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4022', '对话导出', '402', '3', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:conversation:export',  '#', 'admin', sysdate(), '', null, '');
+-- Candy AI 系统设置按钮权限
+insert into sys_menu values('4030', '设置查询', '403', '1', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:setting:query',        '#', 'admin', sysdate(), '', null, '');
+insert into sys_menu values('4031', '设置修改', '403', '2', '', '', '', '', 1, 0, 'F', '0', '0', 'candy:setting:edit',         '#', 'admin', sysdate(), '', null, '');
 
 
 -- ----------------------------
@@ -391,6 +417,28 @@ insert into sys_role_menu values ('2', '1057');
 insert into sys_role_menu values ('2', '1058');
 insert into sys_role_menu values ('2', '1059');
 insert into sys_role_menu values ('2', '1060');
+-- 为管理员角色分配Candy AI管理权限
+insert into sys_role_menu values ('1', '4');   -- Candy AI 管理目录
+insert into sys_role_menu values ('1', '400'); -- 用户管理
+insert into sys_role_menu values ('1', '401'); -- 角色管理
+insert into sys_role_menu values ('1', '402'); -- 对话管理
+insert into sys_role_menu values ('1', '403'); -- 系统设置
+insert into sys_role_menu values ('1', '4000'); -- 用户查询
+insert into sys_role_menu values ('1', '4001'); -- 用户新增
+insert into sys_role_menu values ('1', '4002'); -- 用户修改
+insert into sys_role_menu values ('1', '4003'); -- 用户删除
+insert into sys_role_menu values ('1', '4004'); -- 用户导出
+insert into sys_role_menu values ('1', '4005'); -- 重置密码
+insert into sys_role_menu values ('1', '4010'); -- 角色查询
+insert into sys_role_menu values ('1', '4011'); -- 角色新增
+insert into sys_role_menu values ('1', '4012'); -- 角色修改
+insert into sys_role_menu values ('1', '4013'); -- 角色删除
+insert into sys_role_menu values ('1', '4014'); -- 角色导出
+insert into sys_role_menu values ('1', '4020'); -- 对话查询
+insert into sys_role_menu values ('1', '4021'); -- 对话删除
+insert into sys_role_menu values ('1', '4022'); -- 对话导出
+insert into sys_role_menu values ('1', '4030'); -- 设置查询
+insert into sys_role_menu values ('1', '4031'); -- 设置修改
 
 -- ----------------------------
 -- 8、角色和部门关联表  角色1-N部门
