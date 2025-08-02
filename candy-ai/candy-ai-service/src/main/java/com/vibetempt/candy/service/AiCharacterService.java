@@ -11,6 +11,47 @@ import java.util.List;
 public interface AiCharacterService {
     
     /**
+     * 创建角色
+     */
+    AiCharacter createCharacter(AiCharacter character);
+    
+    /**
+     * 更新角色
+     */
+    int updateCharacter(AiCharacter character);
+    
+    /**
+     * 删除角色
+     */
+    int deleteCharacter(Long id);
+    
+    /**
+     * 获取角色列表
+     */
+    List<AiCharacter> getCharacterList(AiCharacter query);
+    
+    /**
+     * 获取角色详情
+     */
+    AiCharacter getCharacterById(Long id);
+    
+    /**
+     * 获取用户创建的角色
+     */
+    List<AiCharacter> getUserCharacters(Long userId);
+    
+    /**
+     * 获取系统预设角色
+     */
+    List<AiCharacter> getSystemCharacters();
+    
+    /**
+     * 复制角色
+     */
+    AiCharacter copyCharacter(Long sourceId, Long userId);
+    
+    // 保留原有方法以兼容现有代码
+    /**
      * 根据条件分页查询 AI 角色列表
      * 
      * @param aiCharacter AI 角色信息
@@ -21,10 +62,10 @@ public interface AiCharacterService {
     /**
      * 通过角色ID查询 AI 角色
      * 
-     * @param characterId AI 角色 ID
+     * @param id AI 角色 ID
      * @return AI 角色信息
      */
-    AiCharacter selectAiCharacterById(Long characterId);
+    AiCharacter selectAiCharacterById(Long id);
     
     /**
      * 新增 AI 角色信息
@@ -45,58 +86,16 @@ public interface AiCharacterService {
     /**
      * 通过角色ID删除 AI 角色信息
      * 
-     * @param characterId AI 角色 ID
+     * @param id AI 角色 ID
      * @return 结果
      */
-    int deleteAiCharacterById(Long characterId);
+    int deleteAiCharacterById(Long id);
     
     /**
      * 批量删除 AI 角色信息
      * 
-     * @param characterIds 需要删除的 AI 角色 ID 数组
+     * @param ids 需要删除的 AI 角色 ID 数组
      * @return 结果
      */
-    int deleteAiCharacterByIds(Long[] characterIds);
-    
-    /**
-     * 根据条件分页查询我的角色实例列表
-     * 
-     * @param aiCharacter 查询条件
-     * @return 角色实例集合
-     */
-    List<AiCharacter> selectMyCharacterList(AiCharacter aiCharacter);
-    
-    /**
-     * 根据拥有者查询角色实例列表
-     * 
-     * @param ownerUserId 拥有者用户ID
-     * @return 角色实例集合
-     */
-    List<AiCharacter> selectCharacterListByOwner(Long ownerUserId);
-    
-    /**
-     * 根据模板ID查询角色实例列表
-     * 
-     * @param templateId 模板ID
-     * @return 角色实例集合
-     */
-    List<AiCharacter> selectCharacterListByTemplate(Long templateId);
-    
-    /**
-     * 根据模板创建角色实例
-     * 
-     * @param templateId 模板ID
-     * @param characterName 角色实例名称
-     * @param ownerUserId 实例拥有者用户ID
-     * @return 结果
-     */
-    int createCharacterInstanceFromTemplate(Long templateId, String characterName, Long ownerUserId);
-    
-    /**
-     * 复制AI角色
-     * 
-     * @param id 要复制的角色ID
-     * @return 结果
-     */
-    int copyAiCharacter(Long id);
+    int deleteAiCharacterByIds(Long[] ids);
 } 

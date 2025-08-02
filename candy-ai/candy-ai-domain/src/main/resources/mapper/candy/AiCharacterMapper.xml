@@ -5,36 +5,59 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.vibetempt.candy.domain.mapper.AiCharacterMapper">
     
     <resultMap type="com.vibetempt.candy.domain.AiCharacter" id="AiCharacterResult">
-        <id     property="characterId"      column="character_id"      />
-        <result property="characterName"    column="character_name"    />
-        <result property="description"      column="description"       />
-        <result property="avatar"           column="avatar"            />
-        <result property="personality"      column="personality"       />
-        <result property="background"       column="background"        />
-        <result property="status"           column="status"            />
-        <result property="createBy"         column="create_by"         />
-        <result property="createTime"       column="create_time"       />
-        <result property="updateBy"         column="update_by"         />
-        <result property="updateTime"       column="update_time"       />
-        <result property="remark"           column="remark"            />
+        <id     property="id"               column="id"               />
+        <result property="name"             column="name"             />
+        <result property="description"      column="description"      />
+        <result property="avatarUrl"        column="avatar_url"       />
+        <result property="status"           column="status"           />
+        <result property="creatorId"        column="creator_id"       />
+        <result property="createBy"         column="create_by"        />
+        <result property="createTime"       column="create_time"      />
+        <result property="updateBy"         column="update_by"        />
+        <result property="updateTime"       column="update_time"      />
+        <result property="delFlag"          column="del_flag"         />
+        <result property="style"            column="style"            />
+        <result property="ethnicity"        column="ethnicity"        />
+        <result property="age"              column="age"              />
+        <result property="eyeColor"         column="eye_color"        />
+        <result property="hairStyle"        column="hair_style"       />
+        <result property="hairColor"        column="hair_color"       />
+        <result property="bodyType"         column="body_type"        />
+        <result property="breastSize"       column="breast_size"      />
+        <result property="buttSize"         column="butt_size"        />
+        <result property="personality"      column="personality"      />
+        <result property="occupation"       column="occupation"       />
+        <result property="hobbies"          column="hobbies"          />
+        <result property="relationship"     column="relationship"     />
+        <result property="totalUsers"       column="total_users"      />
+        <result property="totalConversations" column="total_conversations" />
+        <result property="totalMessages"    column="total_messages"   />
     </resultMap>
     
     <sql id="selectAiCharacterVo">
-        select character_id, character_name, description, avatar, personality, background, status, create_by, create_time, update_by, update_time, remark 
-        from candy_ai_character
+        select id, name, description, avatar_url, status, creator_id, create_by, create_time, update_by, update_time, del_flag,
+               style, ethnicity, age, eye_color, hair_style, hair_color, body_type, breast_size, butt_size, personality, 
+               occupation, hobbies, relationship, total_users, total_conversations, total_messages
+        from ai_character
     </sql>
     
     <select id="selectAiCharacterList" parameterType="com.vibetempt.candy.domain.AiCharacter" resultMap="AiCharacterResult">
         <include refid="selectAiCharacterVo"/>
         <where>  
-            <if test="characterName != null and characterName != ''">
-                AND character_name like concat('%', #{characterName}, '%')
+            <if test="name != null and name != ''">
+                AND name like concat('%', #{name}, '%')
             </if>
             <if test="status != null and status != ''">
                 AND status = #{status}
             </if>
+            <if test="creatorId != null">
+                AND creator_id = #{creatorId}
+            </if>
+            <if test="style != null and style != ''">
+                AND style = #{style}
+            </if>
             <if test="personality != null and personality != ''">
-                AND personality like concat('%', #{personality}, '%')
+                AND personality = #{personality}
             </if>
             <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
                 and date_format(create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
@@ -42,63 +65,132 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
                 and date_format(create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
             </if>
+            AND del_flag = '0'
         </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectAiCharacterListByCreator" parameterType="Long" resultMap="AiCharacterResult">
+        <include refid="selectAiCharacterVo"/>
+        where creator_id = #{creatorId} and del_flag = '0'
+        order by create_time desc
+    </select>
+    
+    <select id="selectAiCharacterListByStyle" parameterType="String" resultMap="AiCharacterResult">
+        <include refid="selectAiCharacterVo"/>
+        where style = #{style} and del_flag = '0'
+        order by create_time desc
+    </select>
+    
+    <select id="selectSystemCharacters" resultMap="AiCharacterResult">
+        <include refid="selectAiCharacterVo"/>
+        where creator_id = 1 and del_flag = '0'
+        order by create_time desc
     </select>
     
     <select id="selectAiCharacterById" parameterType="Long" resultMap="AiCharacterResult">
         <include refid="selectAiCharacterVo"/>
-        where character_id = #{characterId}
+        where id = #{id} and del_flag = '0'
     </select>
     
-    <insert id="insertAiCharacter" parameterType="com.vibetempt.candy.domain.AiCharacter" useGeneratedKeys="true" keyProperty="characterId">
-        insert into candy_ai_character(
-            <if test="characterName != null and characterName != ''">character_name,</if>
-            <if test="description != null and description != ''">description,</if>
-            <if test="avatar != null and avatar != ''">avatar,</if>
-            <if test="personality != null and personality != ''">personality,</if>
-            <if test="background != null and background != ''">background,</if>
+    <insert id="insertAiCharacter" parameterType="com.vibetempt.candy.domain.AiCharacter" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_character(
+            <if test="name != null and name != ''">name,</if>
+            <if test="description != null">description,</if>
+            <if test="avatarUrl != null">avatar_url,</if>
             <if test="status != null and status != ''">status,</if>
+            <if test="creatorId != null">creator_id,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
-            <if test="remark != null and remark != ''">remark,</if>
-            create_time
+            <if test="style != null">style,</if>
+            <if test="ethnicity != null">ethnicity,</if>
+            <if test="age != null">age,</if>
+            <if test="eyeColor != null">eye_color,</if>
+            <if test="hairStyle != null">hair_style,</if>
+            <if test="hairColor != null">hair_color,</if>
+            <if test="bodyType != null">body_type,</if>
+            <if test="breastSize != null">breast_size,</if>
+            <if test="buttSize != null">butt_size,</if>
+            <if test="personality != null">personality,</if>
+            <if test="occupation != null">occupation,</if>
+            <if test="hobbies != null">hobbies,</if>
+            <if test="relationship != null">relationship,</if>
+            <if test="totalUsers != null">total_users,</if>
+            <if test="totalConversations != null">total_conversations,</if>
+            <if test="totalMessages != null">total_messages,</if>
+            create_time,
+            update_time
         ) values (
-            <if test="characterName != null and characterName != ''">#{characterName},</if>
-            <if test="description != null and description != ''">#{description},</if>
-            <if test="avatar != null and avatar != ''">#{avatar},</if>
-            <if test="personality != null and personality != ''">#{personality},</if>
-            <if test="background != null and background != ''">#{background},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="avatarUrl != null">#{avatarUrl},</if>
             <if test="status != null and status != ''">#{status},</if>
+            <if test="creatorId != null">#{creatorId},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
-            <if test="remark != null and remark != ''">#{remark},</if>
-            sysdate()
+            <if test="style != null">#{style},</if>
+            <if test="ethnicity != null">#{ethnicity},</if>
+            <if test="age != null">#{age},</if>
+            <if test="eyeColor != null">#{eyeColor},</if>
+            <if test="hairStyle != null">#{hairStyle},</if>
+            <if test="hairColor != null">#{hairColor},</if>
+            <if test="bodyType != null">#{bodyType},</if>
+            <if test="breastSize != null">#{breastSize},</if>
+            <if test="buttSize != null">#{buttSize},</if>
+            <if test="personality != null">#{personality},</if>
+            <if test="occupation != null">#{occupation},</if>
+            <if test="hobbies != null">#{hobbies},</if>
+            <if test="relationship != null">#{relationship},</if>
+            <if test="totalUsers != null">#{totalUsers},</if>
+            <if test="totalConversations != null">#{totalConversations},</if>
+            <if test="totalMessages != null">#{totalMessages},</if>
+            now(),
+            now()
         )
     </insert>
     
     <update id="updateAiCharacter" parameterType="com.vibetempt.candy.domain.AiCharacter">
-        update candy_ai_character
+        update ai_character
         <set>
-            <if test="characterName != null and characterName != ''">character_name = #{characterName},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
             <if test="description != null">description = #{description},</if>
-            <if test="avatar != null">avatar = #{avatar},</if>
-            <if test="personality != null">personality = #{personality},</if>
-            <if test="background != null">background = #{background},</if>
+            <if test="avatarUrl != null">avatar_url = #{avatarUrl},</if>
             <if test="status != null and status != ''">status = #{status},</if>
+            <if test="style != null">style = #{style},</if>
+            <if test="ethnicity != null">ethnicity = #{ethnicity},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="eyeColor != null">eye_color = #{eyeColor},</if>
+            <if test="hairStyle != null">hair_style = #{hairStyle},</if>
+            <if test="hairColor != null">hair_color = #{hairColor},</if>
+            <if test="bodyType != null">body_type = #{bodyType},</if>
+            <if test="breastSize != null">breast_size = #{breastSize},</if>
+            <if test="buttSize != null">butt_size = #{buttSize},</if>
+            <if test="personality != null">personality = #{personality},</if>
+            <if test="occupation != null">occupation = #{occupation},</if>
+            <if test="hobbies != null">hobbies = #{hobbies},</if>
+            <if test="relationship != null">relationship = #{relationship},</if>
             <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
-            <if test="remark != null">remark = #{remark},</if>
-            update_time = sysdate()
+            update_time = now()
         </set>
-        where character_id = #{characterId}
+        where id = #{id}
     </update>
     
     <delete id="deleteAiCharacterById" parameterType="Long">
-        delete from candy_ai_character where character_id = #{characterId}
+        update ai_character set del_flag = '2' where id = #{id}
     </delete>
     
     <delete id="deleteAiCharacterByIds" parameterType="Long">
-        delete from candy_ai_character where character_id in 
-        <foreach item="characterId" collection="array" open="(" separator="," close=")">
-            #{characterId}
+        update ai_character set del_flag = '2' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </delete>
+    
+    <update id="updateCharacterStats">
+        update ai_character
+        set total_users = #{totalUsers},
+            total_conversations = #{totalConversations},
+            total_messages = #{totalMessages},
+            update_time = now()
+        where id = #{id}
+    </update>
     
 </mapper> 

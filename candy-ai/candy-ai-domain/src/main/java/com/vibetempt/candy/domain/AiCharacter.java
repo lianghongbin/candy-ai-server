@@ -10,69 +10,91 @@ import jakarta.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * AI 角色实例实体
+ * AI 角色实体
  * 
  * @author vibetempt
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("candy_ai_character")
+@TableName("ai_character")
 public class AiCharacter extends BaseEntity {
     
     private static final long serialVersionUID = 1L;
 
-    /** 角色实例ID */
-    @TableId(value = "character_id", type = IdType.AUTO)
-    private Long characterId;
+    /** 角色ID */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
-    /** 角色模板ID */
-    private Long templateId;
-
-    /** 模板创建者ID */
-    private String templateCreator;
-
-    /** 角色实例名称 */
+    /** 角色名称 */
     @NotBlank(message = "角色名称不能为空")
-    @Size(max = 50, message = "角色名称长度不能超过50个字符")
-    private String characterName;
+    @Size(max = 100, message = "角色名称长度不能超过100个字符")
+    private String name;
 
-    /** 角色状态（0正常 1停用） */
+    /** 角色描述 */
+    private String description;
+
+    /** 角色风格 */
+    private String style;
+
+    /** 种族 */
+    private String ethnicity;
+
+    /** 年龄 */
+    private String age;
+
+    /** 眼睛颜色 */
+    private String eyeColor;
+
+    /** 发型 */
+    private String hairStyle;
+
+    /** 发色 */
+    private String hairColor;
+
+    /** 体型 */
+    private String bodyType;
+
+    /** 胸部大小 */
+    private String breastSize;
+
+    /** 臀部大小 */
+    private String buttSize;
+
+    /** 性格 */
+    private String personality;
+
+    /** 职业 */
+    private String occupation;
+
+    /** 爱好 */
+    private String hobbies;
+
+    /** 关系 */
+    private String relationship;
+
+    /** 角色类型 */
+    @NotBlank(message = "角色类型不能为空")
+    private String characterType;
+
+    /** 会员类型 */
+    @NotBlank(message = "会员类型不能为空")
+    private String membershipType;
+
+    /** 是否系统创建 */
+    private String isSystem;
+
+    /** 是否公开 */
+    private Boolean isPublic;
+
+    /** 是否激活 */
+    private Integer isActive;
+
+    /** 创建者ID */
+    private Long creatorId;
+
+    /** 头像URL */
+    private String avatarUrl;
+
+    /** 状态 */
     private String status;
-
-    /** 角色实例拥有者用户ID（可以聊天、管理此角色） */
-    private Long ownerUserId;
-
-    /** 创建者ID（创建此角色实例的用户） */
-    private String createBy;
-
-    /** 创建时间 */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 更新者ID */
-    private String updateBy;
-
-    /** 更新时间 */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
-
-    /** 备注 */
-    private String remark;
-
-    // 手动添加 setter 方法（Lombok 可能没有正常工作）
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
-    }
-
-    public void setCharacterName(String characterName) {
-        this.characterName = characterName;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setOwnerUserId(Long ownerUserId) {
-        this.ownerUserId = ownerUserId;
-    }
 } 

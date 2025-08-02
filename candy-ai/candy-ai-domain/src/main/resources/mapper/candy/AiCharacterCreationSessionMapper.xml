@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vibetempt.candy.domain.mapper.AiCharacterCreationSessionMapper">
+    
+    <resultMap type="AiCharacterCreationSession" id="AiCharacterCreationSessionResult">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="currentStep" column="current_step"/>
+        <result property="selections" column="selections"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectAiCharacterCreationSessionVo">
+        select id, user_id, session_id, current_step, selections, status, create_time, update_time 
+        from ai_character_creation_session
+    </sql>
+
+    <select id="selectAiCharacterCreationSessionList" parameterType="AiCharacterCreationSession" resultMap="AiCharacterCreationSessionResult">
+        <include refid="selectAiCharacterCreationSessionVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="sessionId != null  and sessionId != ''"> and session_id = #{sessionId}</if>
+            <if test="currentStep != null  and currentStep != ''"> and current_step = #{currentStep}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectAiCharacterCreationSessionById" parameterType="Long" resultMap="AiCharacterCreationSessionResult">
+        <include refid="selectAiCharacterCreationSessionVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectAiCharacterCreationSessionBySessionId" parameterType="String" resultMap="AiCharacterCreationSessionResult">
+        <include refid="selectAiCharacterCreationSessionVo"/>
+        where session_id = #{sessionId}
+    </select>
+    
+    <select id="selectActiveSessionByUserId" parameterType="Long" resultMap="AiCharacterCreationSessionResult">
+        <include refid="selectAiCharacterCreationSessionVo"/>
+        where user_id = #{userId} and status = 'active'
+        order by create_time desc
+        limit 1
+    </select>
+        
+    <insert id="insertAiCharacterCreationSession" parameterType="AiCharacterCreationSession" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_character_creation_session
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="sessionId != null">session_id,</if>
+            <if test="currentStep != null">current_step,</if>
+            <if test="selections != null">selections,</if>
+            <if test="status != null">status,</if>
+            create_time,
+            update_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="sessionId != null">#{sessionId},</if>
+            <if test="currentStep != null">#{currentStep},</if>
+            <if test="selections != null">#{selections},</if>
+            <if test="status != null">#{status},</if>
+            now(),
+            now()
+         </trim>
+    </insert>
+
+    <update id="updateAiCharacterCreationSession" parameterType="AiCharacterCreationSession">
+        update ai_character_creation_session
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="sessionId != null">session_id = #{sessionId},</if>
+            <if test="currentStep != null">current_step = #{currentStep},</if>
+            <if test="selections != null">selections = #{selections},</if>
+            <if test="status != null">status = #{status},</if>
+            update_time = now()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAiCharacterCreationSessionById" parameterType="Long">
+        delete from ai_character_creation_session where id = #{id}
+    </delete>
+
+    <delete id="deleteAiCharacterCreationSessionByIds" parameterType="String">
+        delete from ai_character_creation_session where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <update id="updateSessionStatus">
+        update ai_character_creation_session 
+        set status = #{status}, update_time = now()
+        where session_id = #{sessionId}
+    </update>
+    
+    <delete id="cleanExpiredSessions" parameterType="String">
+        delete from ai_character_creation_session 
+        where create_time &lt; #{expireTime} and status = 'active'
+    </delete>
+    
+</mapper> 

@@ -33,39 +33,71 @@ public class AiCharacterTemplate extends BaseEntity {
     /** 角色描述 */
     private String description;
 
-    /** 性格设定 */
+    /** 角色风格 */
+    private String style;
+
+    /** 种族 */
+    private String ethnicity;
+
+    /** 年龄 */
+    private String age;
+
+    /** 眼睛颜色 */
+    private String eyeColor;
+
+    /** 发型 */
+    private String hairStyle;
+
+    /** 发色 */
+    private String hairColor;
+
+    /** 体型 */
+    private String bodyType;
+
+    /** 胸部大小 */
+    private String breastSize;
+
+    /** 臀部大小 */
+    private String buttSize;
+
+    /** 性格 */
     private String personality;
 
-    /** 头像URL */
-    private String avatarUrl;
+    /** 职业 */
+    private String occupation;
+
+    /** 爱好 */
+    private String hobbies;
+
+    /** 关系 */
+    private String relationship;
 
     /** 角色类型 */
+    @NotBlank(message = "角色类型不能为空")
     private String characterType;
 
-    /** 创建者ID */
-    private Long creatorId;
+    /** 会员类型 */
+    @NotBlank(message = "会员类型不能为空")
+    private String membershipType;
+
+    /** 是否系统创建 */
+    private String isSystem;
+
+    /** 是否公开 */
+    private Boolean isPublic;
 
     /** 是否激活 */
     private Integer isActive;
 
-    /** 是否公开 */
-    private Integer isPublic;
+    /** 创建者ID */
+    private Long creatorId;
 
-    /** 使用用户数 */
-    private Integer totalUsers;
+    /** 头像URL */
+    private String avatarUrl;
 
-    /** 总对话数 */
-    private Integer totalConversations;
-
-    /** 总消息数 */
-    private Integer totalMessages;
+    /** 状态 */
+    private String status;
 
     /** 性别 */
     private String gender;
-
-    /** 年龄 */
-    private Integer age;
-
-    /** 删除标志（0代表存在 2代表删除） */
-    private String delFlag;
 } 

@@ -20,6 +20,81 @@ public class AiCharacterServiceImpl implements AiCharacterService {
     @Autowired
     private AiCharacterMapper aiCharacterMapper;
     
+    // 新接口方法实现
+    @Override
+    public AiCharacter createCharacter(AiCharacter character) {
+        aiCharacterMapper.insertAiCharacter(character);
+        return character;
+    }
+    
+    @Override
+    public int updateCharacter(AiCharacter character) {
+        character.setUpdateBy(SecurityUtils.getUsername());
+        return aiCharacterMapper.updateAiCharacter(character);
+    }
+    
+    @Override
+    public int deleteCharacter(Long id) {
+        return aiCharacterMapper.deleteAiCharacterById(id);
+    }
+    
+    @Override
+    public List<AiCharacter> getCharacterList(AiCharacter query) {
+        return aiCharacterMapper.selectAiCharacterList(query);
+    }
+    
+    @Override
+    public AiCharacter getCharacterById(Long id) {
+        return aiCharacterMapper.selectAiCharacterById(id);
+    }
+    
+    @Override
+    public List<AiCharacter> getUserCharacters(Long userId) {
+        return aiCharacterMapper.selectAiCharacterListByCreator(userId);
+    }
+    
+    @Override
+    public List<AiCharacter> getSystemCharacters() {
+        return aiCharacterMapper.selectSystemCharacters();
+    }
+    
+    @Override
+    public AiCharacter copyCharacter(Long sourceId, Long userId) {
+        // 获取原角色信息
+        AiCharacter originalCharacter = aiCharacterMapper.selectAiCharacterById(sourceId);
+        if (originalCharacter == null) {
+            return null;
+        }
+        
+        // 创建新角色，复制原角色的信息
+        AiCharacter newCharacter = new AiCharacter();
+        newCharacter.setName(originalCharacter.getName() + "_副本");
+        newCharacter.setDescription(originalCharacter.getDescription());
+        newCharacter.setAvatarUrl(originalCharacter.getAvatarUrl());
+        newCharacter.setCreatorId(userId);
+        newCharacter.setCreateBy(SecurityUtils.getUsername());
+        newCharacter.setStatus("0");
+        
+        // 复制角色属性
+        newCharacter.setStyle(originalCharacter.getStyle());
+        newCharacter.setEthnicity(originalCharacter.getEthnicity());
+        newCharacter.setAge(originalCharacter.getAge());
+        newCharacter.setEyeColor(originalCharacter.getEyeColor());
+        newCharacter.setHairStyle(originalCharacter.getHairStyle());
+        newCharacter.setHairColor(originalCharacter.getHairColor());
+        newCharacter.setBodyType(originalCharacter.getBodyType());
+        newCharacter.setBreastSize(originalCharacter.getBreastSize());
+        newCharacter.setButtSize(originalCharacter.getButtSize());
+        newCharacter.setPersonality(originalCharacter.getPersonality());
+        newCharacter.setOccupation(originalCharacter.getOccupation());
+        newCharacter.setHobbies(originalCharacter.getHobbies());
+        newCharacter.setRelationship(originalCharacter.getRelationship());
+        
+        aiCharacterMapper.insertAiCharacter(newCharacter);
+        return newCharacter;
+    }
+    
+    // 保留原有方法以兼容现有代码
     /**
      * 根据条件分页查询 AI 角色列表
      * 
@@ -34,12 +109,12 @@ public class AiCharacterServiceImpl implements AiCharacterService {
     /**
      * 根据 ID 查询 AI 角色
      * 
-     * @param characterId AI 角色 ID
+     * @param id AI 角色 ID
      * @return AI 角色信息
      */
     @Override
-    public AiCharacter selectAiCharacterById(Long characterId) {
-        return aiCharacterMapper.selectAiCharacterById(characterId);
+    public AiCharacter selectAiCharacterById(Long id) {
+        return aiCharacterMapper.selectAiCharacterById(id);
     }
     
     /**
@@ -67,104 +142,22 @@ public class AiCharacterServiceImpl implements AiCharacterService {
     /**
      * 删除 AI 角色信息
      * 
-     * @param characterId AI 角色 ID
+     * @param id AI 角色 ID
      * @return 结果
      */
     @Override
-    public int deleteAiCharacterById(Long characterId) {
-        return aiCharacterMapper.deleteAiCharacterById(characterId);
+    public int deleteAiCharacterById(Long id) {
+        return aiCharacterMapper.deleteAiCharacterById(id);
     }
     
     /**
      * 批量删除 AI 角色
      * 
-     * @param characterIds 需要删除的 AI 角色 ID 数组
+     * @param ids 需要删除的 AI 角色 ID 数组
      * @return 结果
      */
     @Override
-    public int deleteAiCharacterByIds(Long[] characterIds) {
-        return aiCharacterMapper.deleteAiCharacterByIds(characterIds);
-    }
-    
-    /**
-     * 根据条件分页查询我的角色实例列表
-     * 
-     * @param aiCharacter 查询条件
-     * @return 角色实例集合
-     */
-    @Override
-    public List<AiCharacter> selectMyCharacterList(AiCharacter aiCharacter) {
-        // 设置当前用户ID作为拥有者条件
-        aiCharacter.setOwnerUserId(SecurityUtils.getUserId());
-        return aiCharacterMapper.selectAiCharacterList(aiCharacter);
-    }
-    
-    /**
-     * 根据拥有者查询角色实例列表
-     * 
-     * @param ownerUserId 拥有者用户ID
-     * @return 角色实例集合
-     */
-    @Override
-    public List<AiCharacter> selectCharacterListByOwner(Long ownerUserId) {
-        return aiCharacterMapper.selectCharacterInstancesByOwner(ownerUserId);
-    }
-    
-    /**
-     * 根据模板ID查询角色实例列表
-     * 
-     * @param templateId 模板ID
-     * @return 角色实例集合
-     */
-    @Override
-    public List<AiCharacter> selectCharacterListByTemplate(Long templateId) {
-        AiCharacter query = new AiCharacter();
-        query.setTemplateId(templateId);
-        return aiCharacterMapper.selectAiCharacterList(query);
-    }
-    
-    /**
-     * 根据模板创建角色实例
-     * 
-     * @param templateId 模板ID
-     * @param characterName 角色实例名称
-     * @param ownerUserId 实例拥有者用户ID
-     * @return 结果
-     */
-    @Override
-    public int createCharacterInstanceFromTemplate(Long templateId, String characterName, Long ownerUserId) {
-        AiCharacter aiCharacter = new AiCharacter();
-        aiCharacter.setTemplateId(templateId);
-        aiCharacter.setCharacterName(characterName);
-        aiCharacter.setOwnerUserId(ownerUserId);
-        aiCharacter.setCreateBy(SecurityUtils.getUsername());
-        aiCharacter.setStatus("0"); // 正常状态
-        
-        return aiCharacterMapper.insertAiCharacter(aiCharacter);
-    }
-    
-    /**
-     * 复制AI角色
-     * 
-     * @param id 要复制的角色ID
-     * @return 结果
-     */
-    @Override
-    public int copyAiCharacter(Long id) {
-        // 获取原角色信息
-        AiCharacter originalCharacter = aiCharacterMapper.selectAiCharacterById(id);
-        if (originalCharacter == null) {
-            return 0;
-        }
-        
-        // 创建新角色，复制原角色的信息
-        AiCharacter newCharacter = new AiCharacter();
-        newCharacter.setCharacterName(originalCharacter.getCharacterName() + "_副本");
-        newCharacter.setTemplateId(originalCharacter.getTemplateId());
-        newCharacter.setOwnerUserId(SecurityUtils.getUserId());
-        newCharacter.setCreateBy(SecurityUtils.getUsername());
-        newCharacter.setStatus("0"); // 正常状态
-        
-        return aiCharacterMapper.insertAiCharacter(newCharacter);
+    public int deleteAiCharacterByIds(Long[] ids) {
+        return aiCharacterMapper.deleteAiCharacterByIds(ids);
     }
 } 

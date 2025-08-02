@@ -87,6 +87,25 @@ export const constantRoutes = [
         meta: { title: '个人中心', icon: 'user' }
       }
     ]
+  },
+  {
+    path: '/candy/role',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/candy/role/index'),
+        name: 'CandyRole',
+        meta: { title: '角色管理', icon: 'user' }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/candy/role/create'),
+        name: 'CharacterCreate',
+        meta: { title: '创建角色', icon: 'user' }
+      }
+    ]
   }
 ]
 

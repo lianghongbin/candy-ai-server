@@ -2,6 +2,7 @@ package com.vibetempt.candy.domain.mapper;
 
 import com.vibetempt.candy.domain.AiCharacter;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
@@ -21,44 +22,35 @@ public interface AiCharacterMapper {
     List<AiCharacter> selectAiCharacterList(AiCharacter aiCharacter);
     
     /**
-     * 根据用户查询 AI 角色列表
+     * 根据创建者查询 AI 角色列表
      * 
-     * @param userId 用户ID
+     * @param creatorId 创建者ID
      * @return AI 角色集合
      */
-    List<AiCharacter> selectAiCharacterListByUserId(Long userId);
+    List<AiCharacter> selectAiCharacterListByCreator(Long creatorId);
     
     /**
-     * 根据用户查询 AI 角色列表（带条件）
+     * 根据风格查询 AI 角色列表
      * 
-     * @param aiCharacter AI 角色信息（包含用户ID）
+     * @param style 风格
      * @return AI 角色集合
      */
-    List<AiCharacter> selectAiCharacterListByUser(AiCharacter aiCharacter);
+    List<AiCharacter> selectAiCharacterListByStyle(String style);
     
     /**
-     * 根据拥有者查询角色实例列表
+     * 查询系统预设角色列表
      * 
-     * @param ownerUserId 拥有者用户ID
-     * @return 角色实例集合
+     * @return AI 角色集合
      */
-    List<AiCharacter> selectCharacterInstancesByOwner(Long ownerUserId);
-    
-    /**
-     * 根据模板ID查询角色实例列表
-     * 
-     * @param templateId 模板ID
-     * @return 角色实例集合
-     */
-    List<AiCharacter> selectCharacterInstancesByTemplate(Long templateId);
+    List<AiCharacter> selectSystemCharacters();
     
     /**
      * 根据 ID 查询 AI 角色
      * 
-     * @param characterId AI 角色 ID
+     * @param id AI 角色 ID
      * @return AI 角色信息
      */
-    AiCharacter selectAiCharacterById(Long characterId);
+    AiCharacter selectAiCharacterById(Long id);
     
     /**
      * 新增 AI 角色
@@ -79,16 +71,30 @@ public interface AiCharacterMapper {
     /**
      * 删除 AI 角色
      * 
-     * @param characterId AI 角色 ID
+     * @param id AI 角色 ID
      * @return 结果
      */
-    int deleteAiCharacterById(Long characterId);
+    int deleteAiCharacterById(Long id);
     
     /**
      * 批量删除 AI 角色
      * 
-     * @param characterIds 需要删除的 AI 角色 ID 数组
+     * @param ids 需要删除的 AI 角色 ID 数组
      * @return 结果
      */
-    int deleteAiCharacterByIds(Long[] characterIds);
+    int deleteAiCharacterByIds(Long[] ids);
+    
+    /**
+     * 更新角色统计信息
+     * 
+     * @param id 角色ID
+     * @param totalUsers 使用用户数
+     * @param totalConversations 总对话数
+     * @param totalMessages 总消息数
+     * @return 结果
+     */
+    int updateCharacterStats(@Param("id") Long id, 
+                           @Param("totalUsers") Integer totalUsers,
+                           @Param("totalConversations") Integer totalConversations,
+                           @Param("totalMessages") Integer totalMessages);
 } 

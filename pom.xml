@@ -34,7 +34,7 @@
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jakarta.version>6.0.0</jakarta.version>
         <springdoc.version>2.3.0</springdoc.version>
-        <lombok.version>1.18.34</lombok.version>
+        <lombok.version>1.18.38</lombok.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -219,6 +219,13 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
