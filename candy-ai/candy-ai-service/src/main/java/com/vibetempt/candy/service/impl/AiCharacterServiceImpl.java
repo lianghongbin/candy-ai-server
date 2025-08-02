@@ -159,15 +159,11 @@ public class AiCharacterServiceImpl implements AiCharacterService {
         
         // 创建新角色，复制原角色的信息
         AiCharacter newCharacter = new AiCharacter();
-        newCharacter.setName(originalCharacter.getName() + "_副本");
-        newCharacter.setDescription(originalCharacter.getDescription());
-        newCharacter.setPersonality(originalCharacter.getPersonality());
-        newCharacter.setAvatarUrl(originalCharacter.getAvatarUrl());
-        newCharacter.setCharacterType(originalCharacter.getCharacterType());
-        newCharacter.setCreatorId(SecurityUtils.getUserId());
-        newCharacter.setIsActive(originalCharacter.getIsActive());
-        newCharacter.setIsPublic(originalCharacter.getIsPublic());
+        newCharacter.setCharacterName(originalCharacter.getCharacterName() + "_副本");
+        newCharacter.setTemplateId(originalCharacter.getTemplateId());
+        newCharacter.setOwnerUserId(SecurityUtils.getUserId());
         newCharacter.setCreateBy(SecurityUtils.getUsername());
+        newCharacter.setStatus("0"); // 正常状态
         
         return aiCharacterMapper.insertAiCharacter(newCharacter);
     }

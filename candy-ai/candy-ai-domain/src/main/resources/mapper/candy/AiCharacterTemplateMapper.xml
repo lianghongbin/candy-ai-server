@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vibetempt.candy.domain.mapper.AiCharacterTemplateMapper">
+    
+    <resultMap type="com.vibetempt.candy.domain.AiCharacterTemplate" id="AiCharacterTemplateResult">
+        <id     property="id"               column="id"               />
+        <result property="name"             column="name"             />
+        <result property="description"      column="description"      />
+        <result property="personality"      column="personality"      />
+        <result property="avatarUrl"        column="avatar_url"       />
+        <result property="characterType"    column="character_type"   />
+        <result property="creatorId"        column="creator_id"       />
+        <result property="isActive"         column="is_active"        />
+        <result property="isPublic"         column="is_public"        />
+        <result property="totalUsers"       column="total_users"      />
+        <result property="totalConversations" column="total_conversations" />
+        <result property="totalMessages"    column="total_messages"   />
+        <result property="gender"           column="gender"           />
+        <result property="age"              column="age"              />
+        <result property="createTime"       column="create_time"      />
+        <result property="updateTime"       column="update_time"      />
+        <result property="createBy"         column="create_by"        />
+        <result property="updateBy"         column="update_by"        />
+        <result property="delFlag"          column="del_flag"         />
+    </resultMap>
+    
+    <sql id="selectAiCharacterTemplateVo">
+        select id, name, description, personality, avatar_url, character_type, creator_id, is_active, is_public, 
+               total_users, total_conversations, total_messages, gender, age, create_time, update_time, create_by, update_by, del_flag
+        from ai_character
+    </sql>
+    
+    <select id="selectAiCharacterTemplateList" parameterType="com.vibetempt.candy.domain.AiCharacterTemplate" resultMap="AiCharacterTemplateResult">
+        <include refid="selectAiCharacterTemplateVo"/>
+        <where>
+            <if test="name != null and name != ''">
+                AND name like concat('%', #{name}, '%')
+            </if>
+            <if test="description != null and description != ''">
+                AND description like concat('%', #{description}, '%')
+            </if>
+            <if test="characterType != null and characterType != ''">
+                AND character_type = #{characterType}
+            </if>
+            <if test="creatorId != null">
+                AND creator_id = #{creatorId}
+            </if>
+            <if test="isActive != null">
+                AND is_active = #{isActive}
+            </if>
+            <if test="isPublic != null">
+                AND is_public = #{isPublic}
+            </if>
+            <if test="gender != null and gender != ''">
+                AND gender = #{gender}
+            </if>
+            <if test="age != null">
+                AND age = #{age}
+            </if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+            </if>
+            AND del_flag = '0'
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectAiCharacterTemplateById" parameterType="Long" resultMap="AiCharacterTemplateResult">
+        <include refid="selectAiCharacterTemplateVo"/>
+        where id = #{id} AND del_flag = '0'
+    </select>
+    
+    <insert id="insertAiCharacterTemplate" parameterType="com.vibetempt.candy.domain.AiCharacterTemplate" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_character(
+            <if test="name != null and name != ''">name,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="personality != null and personality != ''">personality,</if>
+            <if test="avatarUrl != null and avatarUrl != ''">avatar_url,</if>
+            <if test="characterType != null and characterType != ''">character_type,</if>
+            <if test="creatorId != null">creator_id,</if>
+            <if test="isActive != null">is_active,</if>
+            <if test="isPublic != null">is_public,</if>
+            <if test="gender != null and gender != ''">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            create_time,
+            update_time
+        ) values (
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="personality != null and personality != ''">#{personality},</if>
+            <if test="avatarUrl != null and avatarUrl != ''">#{avatarUrl},</if>
+            <if test="characterType != null and characterType != ''">#{characterType},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="isActive != null">#{isActive},</if>
+            <if test="isPublic != null">#{isPublic},</if>
+            <if test="gender != null and gender != ''">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            sysdate(),
+            sysdate()
+        )
+    </insert>
+    
+    <update id="updateAiCharacterTemplate" parameterType="com.vibetempt.candy.domain.AiCharacterTemplate">
+        update ai_character
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="personality != null">personality = #{personality},</if>
+            <if test="avatarUrl != null">avatar_url = #{avatarUrl},</if>
+            <if test="characterType != null and characterType != ''">character_type = #{characterType},</if>
+            <if test="creatorId != null">creator_id = #{creatorId},</if>
+            <if test="isActive != null">is_active = #{isActive},</if>
+            <if test="isPublic != null">is_public = #{isPublic},</if>
+            <if test="totalUsers != null">total_users = #{totalUsers},</if>
+            <if test="totalConversations != null">total_conversations = #{totalConversations},</if>
+            <if test="totalMessages != null">total_messages = #{totalMessages},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+    
+    <delete id="deleteAiCharacterTemplateById" parameterType="Long">
+        update ai_character set del_flag = '2' where id = #{id}
+    </delete>
+    
+    <delete id="deleteAiCharacterTemplateByIds" parameterType="Long">
+        update ai_character set del_flag = '2' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper> 
