@@ -142,4 +142,33 @@ public class AiCharacterServiceImpl implements AiCharacterService {
         
         return aiCharacterMapper.insertAiCharacter(aiCharacter);
     }
+    
+    /**
+     * 复制AI角色
+     * 
+     * @param id 要复制的角色ID
+     * @return 结果
+     */
+    @Override
+    public int copyAiCharacter(Long id) {
+        // 获取原角色信息
+        AiCharacter originalCharacter = aiCharacterMapper.selectAiCharacterById(id);
+        if (originalCharacter == null) {
+            return 0;
+        }
+        
+        // 创建新角色，复制原角色的信息
+        AiCharacter newCharacter = new AiCharacter();
+        newCharacter.setName(originalCharacter.getName() + "_副本");
+        newCharacter.setDescription(originalCharacter.getDescription());
+        newCharacter.setPersonality(originalCharacter.getPersonality());
+        newCharacter.setAvatarUrl(originalCharacter.getAvatarUrl());
+        newCharacter.setCharacterType(originalCharacter.getCharacterType());
+        newCharacter.setCreatorId(SecurityUtils.getUserId());
+        newCharacter.setIsActive(originalCharacter.getIsActive());
+        newCharacter.setIsPublic(originalCharacter.getIsPublic());
+        newCharacter.setCreateBy(SecurityUtils.getUsername());
+        
+        return aiCharacterMapper.insertAiCharacter(newCharacter);
+    }
 } 

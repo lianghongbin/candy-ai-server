@@ -91,4 +91,12 @@ public interface AiCharacterService {
      * @return 结果
      */
     int createCharacterInstanceFromTemplate(Long templateId, String characterName, Long ownerUserId);
+    
+    /**
+     * 复制AI角色
+     * 
+     * @param id 要复制的角色ID
+     * @return 结果
+     */
+    int copyAiCharacter(Long id);
 } 
